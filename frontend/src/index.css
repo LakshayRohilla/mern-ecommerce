@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.rating-text{
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-left: 0.5rem;
+}

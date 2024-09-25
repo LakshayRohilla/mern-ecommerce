@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { Link } from 'react-router-dom';
 import ProdRating from '../shared/UI/prod-rating';
+import { Box } from '@mui/material';
 
 export default function ProductCard({product}) {
   return (
@@ -20,14 +21,19 @@ export default function ProductCard({product}) {
           alt="green iguana"
         />
         </CardContent>
-        <CardContent>
-            <Typography variant="body2" component={Link} to={`/product/${product._id}`}>
-              {product.name}
+        <CardContent >
+          <Typography variant="body2" component={Link} to={`/product/${product._id}`} sx={{mb:4}}>
+            {product.name}
+          </Typography>
+          <Box sx={{display:'flex'}}>
+            <ProdRating readOnly={true} value={product.rating}/>
+            <Typography gutterBottom  sx={{ color: 'grey'}} className='rating-text'>
+              {product.numReviews} reviews
             </Typography>
+          </Box>
           <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: 'bold', color: 'grey'}}>
             ₹{product.price}
           </Typography>
-          <ProdRating readOnly={true} value={product.rating}/>
         </CardContent>
       </CardActionArea>
     </Card>
