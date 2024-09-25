@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import { Link } from 'react-router-dom';
+import ProdRating from '../shared/UI/prod-rating';
 
 export default function ProductCard({product}) {
   return (
@@ -26,7 +27,7 @@ export default function ProductCard({product}) {
           <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: 'bold', color: 'grey'}}>
             ₹{product.price}
           </Typography>
-          
+          <ProdRating readOnly={true} value={product.rating}/>
         </CardContent>
       </CardActionArea>
     </Card>
