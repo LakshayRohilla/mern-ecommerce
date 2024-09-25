@@ -19,7 +19,7 @@ const ProductFetcher = function () {
             fontSize: "50px",
           }}
         >
-          <p sty>All Product`s</p>
+          <p>All Product`s</p>
         </Box>
 
         <Grid container spacing={2}>
