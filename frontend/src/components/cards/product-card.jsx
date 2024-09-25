@@ -4,6 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
+import { Link } from 'react-router-dom';
 
 export default function ProductCard({product}) {
   return (
@@ -19,9 +20,9 @@ export default function ProductCard({product}) {
         />
         </CardContent>
         <CardContent>
-          <Typography variant="body2" >
-            {product.name}
-          </Typography>
+            <Typography variant="body2" component={Link} to={`/product/${product._id}`}>
+              {product.name}
+            </Typography>
           <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: 'bold', color: 'grey'}}>
             ₹{product.price}
           </Typography>
