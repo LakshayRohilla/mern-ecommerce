@@ -1,15 +1,17 @@
 import HomePage from "./pages/home-page";
+import ProductDetail from "./pages/product-detail";
 // import NavBar from "./components/nav-bar/navBar";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 export default function App(){
   return (
     <>
-      <h1>This is app file !!</h1>
+      <h1 style={{backgroundColor:'#818589',display:'flex', justifyContent:'center', marginTop: '0', height:'4rem', alignItems:'center'}}>NavBar!!</h1>
       {/* <NavBar/> */}
       <BrowserRouter>
           <Routes> 
             <Route path="/" element={<HomePage/>}/>
+            <Route path='/product/:pid' element={<ProductDetail/>}/>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
             <Route path='/product/:pid' element={<ProductDetails/>}/>
