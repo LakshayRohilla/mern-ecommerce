@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const ProductDetail = () => {
   return (
     <>
-      {/* <NavBar/> */}
+      <NavBar/>
       <Button
         component={Link}
         to={`/`}

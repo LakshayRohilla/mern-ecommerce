@@ -10,13 +10,13 @@ const ProductFetcher = function () {
     })
   return (
     <>
-      <Box sx={{ m: 6}}>
+      <Box sx={{ ml: 6, mr:6, mt:2, mb:2}}>
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             fontWeight: "bold",
-            fontSize: "50px",
+            fontSize: "30px",
           }}
         >
           <p>All Product`s</p>

@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 export default function App(){
   return (
     <>
-      <h1 style={{backgroundColor:'#818589',display:'flex', justifyContent:'center', marginTop: '0', height:'4rem', alignItems:'center'}}>NavBar!!</h1>
+      {/* <h1 style={{backgroundColor:'#818589',display:'flex', justifyContent:'center', marginTop: '0', height:'4rem', alignItems:'center'}}>NavBar!!</h1> */}
       {/* <NavBar/> */}
       <BrowserRouter>
           <Routes> 
