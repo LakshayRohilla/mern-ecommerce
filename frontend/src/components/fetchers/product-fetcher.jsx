@@ -1,13 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProductCard from '../cards/product-card'
 import Products from '../../products';
 import { Box, Grid } from "@mui/material";
+import axios from 'axios';
 
 const ProductFetcher = function () {
 
+  const [products, setProducts] = useState([]);
+
     useEffect(()=>{
-        console.log(Products);
-    })
+        const fetchproducts = async () => {
+          try{
+            const response = await axios.get('/api/products');
+            setProducts(response.data.products)
+            console.log(response.data.products);
+          } catch (err) {
+            console.log(err.response?.data?.message || 'Something went wrong!');
+          }
+        }
+        fetchproducts();
+    }, []);
+
   return (
     <>
       <Box sx={{ ml: 6, mr:6, mt:2, mb:2}}>
@@ -21,9 +34,17 @@ const ProductFetcher = function () {
         >
           <p>All Product`s</p>
         </Box>
-
-        <Grid container spacing={2}>
+        {/* This one is with dummy data */}
+        {/* <Grid container spacing={2}>
           {Products.map((product) => (
+            <Grid item xs={12} sm={6} md={3} key={product._id}>
+              <ProductCard product={product} />
+            </Grid>
+          ))}
+        </Grid> */}
+        {/* With data that we are receiving from backend */}
+        <Grid container spacing={2}>
+          {products.map((product) => (
             <Grid item xs={12} sm={6} md={3} key={product._id}>
               <ProductCard product={product} />
             </Grid>
