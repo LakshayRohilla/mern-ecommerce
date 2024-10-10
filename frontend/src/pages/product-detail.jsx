@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import ProductsDetailsFetcher from "../components/fetchers/product-detail-fetcher";
 import Footer from "../components/footer/footer";
 import NavBar from "../components/nav-bar/navBar";
@@ -9,6 +9,7 @@ const ProductDetail = () => {
   return (
     <>
       <NavBar/>
+      <Box sx={{mt:4}}>
       <Button
         component={Link}
         to={`/`}
@@ -18,14 +19,16 @@ const ProductDetail = () => {
           color: "white",
           backgroundColor: "black",
           "&:hover": { backgroundColor: "grey" },
-          ml: 4,
+          ml: 4
         }}
       >
         Back
       </Button>
+      </Box>
       <ProductsDetailsFetcher />
+      
       <Footer />
-    </>
+      </>
   );
 };
 
