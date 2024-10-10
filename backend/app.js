@@ -1,6 +1,9 @@
 const express = require('express');
 const routers = require('./routes/route');
 const productRoutes = require('./routes/product-routes');
+const dotenv = require('dotenv');
+dotenv.config();
+
 
 const app = express();
 
@@ -11,4 +14,4 @@ const app = express();
 app.use(routers);
 app.use('/api/products', productRoutes); 
 
-app.listen(5000);
+app.listen(process.env.PORT || 5000);
