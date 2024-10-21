@@ -2,7 +2,10 @@ const express = require('express');
 const routers = require('./routes/route');
 const productRoutes = require('./routes/product-routes');
 const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+
 dotenv.config();
+connectDB(); // connect to MongoDB;
 
 
 const app = express();
