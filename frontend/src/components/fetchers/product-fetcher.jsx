@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ProductCard from '../cards/product-card'
-import Products from '../../products';
+import DummyProducts from '../../products';
 import { Box, Grid } from "@mui/material";
 import axios from 'axios';
 
@@ -43,13 +43,27 @@ const ProductFetcher = function () {
           ))}
         </Grid> */}
         {/* With data that we are receiving from backend */}
-        <Grid container spacing={2}>
+        {/* <Grid container spacing={2}>
           {products.map((product) => (
             <Grid item xs={12} sm={6} md={3} key={product._id}>
               <ProductCard product={product} />
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
+          {products.length===0 ? <Grid container spacing={2}>
+          {DummyProducts.map((product) => (
+            <Grid item xs={12} sm={6} md={3} key={product._id}>
+              <ProductCard product={product} />
+            </Grid>
+          ))}
+        </Grid> : <Grid container spacing={2}>
+          {products.map((product) => (
+            <Grid item xs={12} sm={6} md={3} key={product._id}>
+              <ProductCard product={product} />
+            </Grid>
+          ))}
+        </Grid>}
+
       </Box>
     </>
   );
