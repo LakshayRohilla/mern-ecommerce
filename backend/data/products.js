@@ -3,7 +3,7 @@
 const products = [
   {
     name: 'Airpods Wireless Bluetooth Headphones',
-    image: '', // Static path to the image
+    image: '123', // Static path to the image, added 123 later as DB was giving error for empty value.
     description: 'Bluetooth technology lets you connect it with compatible devices wirelessly. High-quality AAC audio offers immersive listening experience. Built-in microphone allows you to take calls while working',
     brand: 'Apple',
     category: 'Electronics',
@@ -14,7 +14,7 @@ const products = [
   },
   {
     name: 'iPhone 11 Pro 256GB Memory',
-    image: '', // Static path to the image
+    image: '123', // Static path to the image
     description: 'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Apple',
     category: 'Electronics',
@@ -25,7 +25,7 @@ const products = [
   },
   {
     name: 'Cannon EOS 80D DSLR Camera',
-    image: '', // Static path to the image
+    image: '123', // Static path to the image
     description: 'Characterized by versatile imaging specs, the Canon EOS 80D further clarifies itself using a pair of robust focusing systems and an intuitive design',
     brand: 'Cannon',
     category: 'Electronics',
@@ -36,7 +36,7 @@ const products = [
   },
   {
     name: 'Sony Playstation 4 Pro White Version',
-    image: '', // Static path to the image
+    image: '123', // Static path to the image
     description: 'The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music',
     brand: 'Sony',
     category: 'Electronics',
@@ -47,7 +47,7 @@ const products = [
   },
   {
     name: 'Logitech G-Series Gaming Mouse',
-    image: '', // Static path to the image
+    image: '123', // Static path to the image
     description: 'Get a better handle on your games with this Logitech LIGHTSYNC gaming mouse. The six programmable buttons allow customization for a smooth playing experience',
     brand: 'Logitech',
     category: 'Electronics',
@@ -58,7 +58,7 @@ const products = [
   },
   {
     name: 'Amazon Echo Dot 3rd Generation',
-    image: '', // Static path to the image
+    image: '123', // Static path to the image
     description: 'Meet Echo Dot - Our most popular smart speaker with a fabric design. It is our most compact smart speaker that fits perfectly into small space',
     brand: 'Amazon',
     category: 'Electronics',
@@ -70,4 +70,4 @@ const products = [
 ];
 
 // Exporting the products array
-module.exports = { products };
+module.exports = products;
