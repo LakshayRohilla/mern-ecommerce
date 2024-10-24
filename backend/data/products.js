@@ -70,4 +70,5 @@ const products = [
 ];
 
 // Exporting the products array
-module.exports = products;
+module.exports = {products}; // When we try to provide the data from API.
+// module.exports = products; // You you try to run the seeder, this in that case we have to provide it like this.
