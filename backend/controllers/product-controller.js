@@ -24,12 +24,12 @@ const getProductById = async (req, res, next) => {
     try {
         product = await Product.findById(productID);
     } catch (err) {
-        const error = new Error("Something went wrong, could not find a product.");
-        error.code = 404;
+        const error = new Error("Something went wrong, could not find a product."); // Error handling 
+        error.code = 500;
         return next(error);
     }
     if (!product) {
-        const error = new Error("Could not find a product for the provided product id.");
+        const error = new Error("Could not find a product for the provided product id."); // Error handling
         error.code = 404;
         return next(error); // so that it will reach to the next middleware handling the error handling.
     }
