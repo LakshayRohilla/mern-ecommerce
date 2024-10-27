@@ -12,7 +12,7 @@ const ProductDetailsLayout = ({ product }) => {
       </Grid>
 
       {/* Right Side: Title, Description, Price, and Buy Button */}
-      <Grid item xs={12} sm={4.5} container direction="column" spacing={2}>
+      <Grid item xs={12} sm={4.5} container direction="column" spacing={2} sx={{pr:1.3}}>
         <Grid item>
           <Typography variant="h4">{product.name}</Typography>
         </Grid>
