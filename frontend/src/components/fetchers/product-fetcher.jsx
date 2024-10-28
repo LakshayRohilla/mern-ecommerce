@@ -4,6 +4,8 @@ import ProductCard from '../cards/product-card'
 import { Box, Grid } from "@mui/material";
 // import axios from 'axios';
 import { useGetProductsQuery } from "../../store/slices/productSlice";
+import Spinner from '../shared/UI/spinner';
+import AlertMessage from '../shared/UI/alertMessage';
 
 const ProductFetcher = function () {
 
@@ -85,11 +87,10 @@ const ProductFetcher = function () {
             </Grid>
           ))}
         )} */}
-
       {isLoading ? (
-          <h2>Loading....</h2>
+          <Spinner/>
         ) : isError ? (
-          <div>{isError?.data?.message || isError.error}</div>
+          <AlertMessage severity='error'>{isError?.data?.message || isError.error}</AlertMessage>
         ) : (
           <Grid container spacing={2}>
             {products?.map((product) => (
