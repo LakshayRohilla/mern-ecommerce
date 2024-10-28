@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 // import { useEffect, useState } from "react";
 import ProductDetailsLayout from "../shared/Layout/product-details-layout";
 import { useGetProductDetailsQuery } from "../../store/slices/productSlice";
+import Spinner from '../shared/UI/spinner';
+import AlertMessage from "../shared/UI/alertMessage";
 
 const ProductsDetailsFetcher = () => {
   const { pid: productId } = useParams();
@@ -44,9 +46,9 @@ const ProductsDetailsFetcher = () => {
     // {!isLoading && product && <ProductDetailsLayout product={product}/>}
     <>
       {isLoading ? (
-        <h2>Loading....</h2>
+        <Spinner/>
       ) : isError ? (
-        <div>{isError?.data?.message || isError.error}</div>
+        <AlertMessage severity='error'>{isError?.data?.message || isError.error}</AlertMessage>
       ) : (
         <ProductDetailsLayout product={product} />
       )}
