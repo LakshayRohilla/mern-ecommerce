@@ -48,7 +48,7 @@ const ProductsDetailsFetcher = () => {
       {isLoading ? (
         <Spinner/>
       ) : isError ? (
-        <AlertMessage severity='error'>{isError?.data?.message || isError.error}</AlertMessage>
+        <AlertMessage severity='error' marBot={45}>{isError?.data?.message || isError.error || 'Data not found !!'}</AlertMessage>
       ) : (
         <ProductDetailsLayout product={product} />
       )}
