@@ -7,6 +7,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { useState } from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
 
 const bull = (
   <Box
@@ -17,9 +21,26 @@ const bull = (
   </Box>
 );
 
-const ProductDetailsCartSection = function({price, countInStock}){
+const ProductDetailsCartSection = function({price, countInStock, onCartAddHandler}){
+    const [qty, setQty] = useState(0);
+    console.log(countInStock);
+    console.log([...Array(countInStock).keys()]);
+    
+
+    function handleQuantityAdd(){
+      setQty(qty+1);
+    }
+
+    function handleQuantityRemove(){
+      setQty(qty-1);
+    }
+
+    const onCartAddClickHandler = function() {
+      onCartAddHandler(qty)
+    }
+
     return (
-        <Card sx={{ width: '100%', maxHeight: 215 }}>
+        <Card sx={{ width: '100%', maxHeight: countInStock ? 285 : 215 }}>
           <CardContent>
             <Box sx={{display:'flex', m:2}}>
               <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 16 ,flex:'1'}}>
@@ -39,15 +60,40 @@ const ProductDetailsCartSection = function({price, countInStock}){
               </Typography>
             </Box>
             <Divider />
+            { countInStock > 0 && (
+              <>
+              <Box sx={{display:'flex', m:2, mr:-3, alignItems: 'center'}}>
+                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 16 ,flex:'1'}}>
+                  Quantity :
+                </Typography>
+                {qty<=0 ? <Button onClick={handleQuantityRemove} disabled><RemoveIcon /></Button> : <Button onClick={handleQuantityRemove}><RemoveIcon /></Button>}
+                <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 16 , fontWeight:'bold'}}>
+                {qty}
+                </Typography>
+                {qty <= countInStock ? <Button onClick={handleQuantityAdd}><AddIcon /></Button> : <Button onClick={handleQuantityAdd} disabled><AddIcon /></Button>}
+              </Box>
+              <Divider />
+            </>
+            )}
           </CardContent>
           <CardActions sx={{display:'flex', justifyContent:'center'}}>
-            <Button
+            {countInStock>0 ? <Button
                 variant="contained"
                 endIcon={<ShoppingCartIcon />}
                 sx={{ color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' } }} 
+                onClick={onCartAddClickHandler}
+                disabled={qty<=0 }
             >
                 Add To Cart
-            </Button>
+            </Button> : <Button
+                variant="contained"
+                endIcon={<ShoppingCartIcon />}
+                sx={{ color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' } }}
+                disabled
+            >
+                Add To Cart
+            </Button>}
+            
           </CardActions>
         </Card>
       );
