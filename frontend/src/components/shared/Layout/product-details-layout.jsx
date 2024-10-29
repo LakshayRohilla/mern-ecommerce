@@ -2,8 +2,19 @@ import React from 'react';
 import { Grid, Typography, Box } from '@mui/material';
 import ProdRating from '../UI/prod-rating';
 import ProductDetailsCartSection from './product-details-cart-section';
+import { addToCart } from '../../../store/slices/cartSlice';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
 
 const ProductDetailsLayout = ({ product }) => {
+  const dispatch = useDispatch(); 
+    const navigate = useNavigate();
+
+    const onCartAddHandler = function(qty) {
+      dispatch(addToCart({...product, qty}));
+      navigate('/');
+  }
   return (
     <Grid container spacing={2} sx={{p:4}}>
       {/* Left Side: Image */}
@@ -37,7 +48,7 @@ const ProductDetailsLayout = ({ product }) => {
       </Grid>
       {/* Cart Section */}
       <Grid item xs={12} sm={3} container  spacing={2} sx={{float:'right', width: '100%'}}>
-        <ProductDetailsCartSection price={product.price} countInStock={product.countInStock} />
+        <ProductDetailsCartSection price={product.price} countInStock={product.countInStock} onCartAddHandler={onCartAddHandler}/>
       </Grid>
     </Grid>
   );

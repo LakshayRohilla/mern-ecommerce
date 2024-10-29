@@ -27,7 +27,7 @@ const cartSlice = createSlice({
       // Calculate items price
       state.itemsPrice = addDecimals(
         state.cartItems.reduce(
-          (acc, item) => acc + (item.price * item.qty) / 100,
+          (acc, item) => acc + (item.price * item.qty),
           0
         )
       );
@@ -37,7 +37,7 @@ const cartSlice = createSlice({
       state.taxPrice = addDecimals(0.15 * state.itemsPrice);
       // Calculate total price
       state.totalPrice = addDecimals(
-        state.itemsPrice + state.shippingPrice + state.taxPrice
+        +state.itemsPrice + Number(state.shippingPrice) + Number(state.taxPrice)
       );
       // Save the cart to localStorage
       localStorage.setItem("cart", JSON.stringify(state));
