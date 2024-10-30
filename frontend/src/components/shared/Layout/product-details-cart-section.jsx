@@ -10,7 +10,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-
+import { useSnackbar } from 'notistack';
 
 const bull = (
   <Box
@@ -23,10 +23,8 @@ const bull = (
 
 const ProductDetailsCartSection = function({price, countInStock, onCartAddHandler}){
     const [qty, setQty] = useState(0);
-    console.log(countInStock);
-    console.log([...Array(countInStock).keys()]);
+    const { enqueueSnackbar } = useSnackbar();
     
-
     function handleQuantityAdd(){
       setQty(qty+1);
     }
@@ -35,8 +33,9 @@ const ProductDetailsCartSection = function({price, countInStock, onCartAddHandle
       setQty(qty-1);
     }
 
-    const onCartAddClickHandler = function() {
+    const onCartAddClickHandler = function(variant) {
       onCartAddHandler(qty)
+      enqueueSnackbar(qty > 1 ? `Added ${qty} item(s) to cart!` :  `Added ${qty} item to cart!`, { variant}); // Show snackbar
     }
 
     return (
@@ -81,7 +80,7 @@ const ProductDetailsCartSection = function({price, countInStock, onCartAddHandle
                 variant="contained"
                 endIcon={<ShoppingCartIcon />}
                 sx={{ color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' } }} 
-                onClick={onCartAddClickHandler}
+                onClick={() =>onCartAddClickHandler("success")}
                 disabled={qty<=0 }
             >
                 Add To Cart

@@ -5,7 +5,7 @@ import ProductDetailsCartSection from './product-details-cart-section';
 import { addToCart } from '../../../store/slices/cartSlice';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
+import { SnackbarProvider } from "notistack";
 
 const ProductDetailsLayout = ({ product }) => {
   const dispatch = useDispatch(); 
@@ -13,9 +13,10 @@ const ProductDetailsLayout = ({ product }) => {
 
     const onCartAddHandler = function(qty) {
       dispatch(addToCart({...product, qty}));
-      navigate('/');
+      // navigate('/');
   }
   return (
+    <SnackbarProvider>
     <Grid container spacing={2} sx={{p:4}}>
       {/* Left Side: Image */}
       <Grid item xs={12} sm={4.5}>
@@ -51,6 +52,7 @@ const ProductDetailsLayout = ({ product }) => {
         <ProductDetailsCartSection price={product.price} countInStock={product.countInStock} onCartAddHandler={onCartAddHandler}/>
       </Grid>
     </Grid>
+    </SnackbarProvider>
   );
 };
 
