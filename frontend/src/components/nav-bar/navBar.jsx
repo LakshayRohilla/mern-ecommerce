@@ -123,12 +123,12 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem component={Link} to="/cart" sx={{ color: 'inherit', textDecoration: 'none' }}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={cartItemsCount} color="error">
             <ShoppingCartIcon /> 
           </Badge>
-        </IconButton>
+        </IconButton>  
         <p>Cart</p>
       </MenuItem>
       <MenuItem>
@@ -201,12 +201,13 @@ export default function NavBar() {
           {/* <Typography variant="body1" sx={{ color: 'inherit', marginRight: '-10px', alignSelf: 'center' }}>
             Cart
             </Typography> */}
+            <Box component={Link} to="/cart" sx={{ color: 'inherit', textDecoration: 'none' }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={cartItemsCount>0 ? cartItemsCount : 0} color="error">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            
+            </Box>         
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
