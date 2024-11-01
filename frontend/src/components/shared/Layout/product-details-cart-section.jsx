@@ -12,15 +12,6 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useSnackbar } from 'notistack';
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
-
 const ProductDetailsCartSection = function({price, countInStock, onCartAddHandler}){
     const [qty, setQty] = useState(0);
     const { enqueueSnackbar } = useSnackbar();
@@ -69,7 +60,7 @@ const ProductDetailsCartSection = function({price, countInStock, onCartAddHandle
                 <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 16 , fontWeight:'bold'}}>
                 {qty}
                 </Typography>
-                {qty <= countInStock ? <Button onClick={handleQuantityAdd}><AddIcon /></Button> : <Button onClick={handleQuantityAdd} disabled><AddIcon /></Button>}
+                {qty < countInStock ? <Button onClick={handleQuantityAdd}><AddIcon /></Button> : <Button onClick={handleQuantityAdd} disabled><AddIcon /></Button>}
               </Box>
               <Divider />
             </>

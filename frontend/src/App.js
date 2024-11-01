@@ -2,6 +2,7 @@ import HomePage from "./pages/home-page";
 import ProductDetail from "./pages/product-detail";
 // import NavBar from "./components/nav-bar/navBar";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import CartPage from "./pages/cart-page";
 
 export default function App(){
   return (
@@ -12,6 +13,7 @@ export default function App(){
           <Routes> 
             <Route path="/" element={<HomePage/>}/>
             <Route path='/product/:pid' element={<ProductDetail/>}/>
+            <Route path="/cart" element={<CartPage/>}/>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
             <Route path='/product/:pid' element={<ProductDetails/>}/>
