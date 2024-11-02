@@ -16,7 +16,7 @@ const CartFetcher = function () {
       <h1 style={{marginBottom:"38px"}}>Shopping Cart</h1>
       {cartItems.length === 0 ? (
         <>
-          <AlertMessage severity="error">No item in cart !!! </AlertMessage>
+          <AlertMessage severity="info">No item in cart !!! </AlertMessage>
           <Box component={Link} to='/'>
           <Button
                 variant="contained"
