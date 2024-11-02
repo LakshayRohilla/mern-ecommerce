@@ -6,10 +6,14 @@ import HomeIcon from '@mui/icons-material/Home';
 import CartItem from "../shared/Layout/cart-item";
 import Grid from '@mui/material/Grid';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { useNavigate } from "react-router-dom";
 
 const CartFetcher = function () {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+  const navigate = useNavigate();
+
+  const handleCheckout = () => navigate('/login?redirect=/shipping');
   
   return (
     <Box sx={{ color: "grey", m: 3}}>
@@ -40,7 +44,7 @@ const CartFetcher = function () {
                 <Box sx={{pl:6, fontWeight:'bolder'}}>₹ {cartItems.reduce((acc, item)=> acc+item.qty*item.price, 0).toFixed(2)}</Box>
                 <Divider sx={{pt:3}}/>
                 <Box sx={{display:'flex', justifyContent:'center', pb:1.5, pt:2}}>
-                <Button
+                <Button onClick={handleCheckout}
                   variant="contained"
                   endIcon={<NavigateNextIcon />}
                   sx={{ color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' } }}
