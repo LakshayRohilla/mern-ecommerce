@@ -4,7 +4,7 @@ import { Box, Paper, Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { Link } from 'react-router-dom';
 import { useDispatch } from "react-redux";
-import { addToCart } from '../../../store/slices/cartSlice';
+import { addToCart, removeFromCart } from '../../../store/slices/cartSlice';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
@@ -31,6 +31,10 @@ const CartItem = function({ item }) {
     const newQty = qty - 1;
     setQty(newQty);
     dispatch(addToCart({ ...item, qty: newQty }));
+  }
+
+  function handleDeleteButton(){
+    dispatch(removeFromCart(item._id));
   }
 
   return (
@@ -75,7 +79,7 @@ const CartItem = function({ item }) {
         </Grid>
         <Grid item xs={12} md={2}>
           <Item sx={{ pb: 2 }}>
-            <Button
+            <Button onClick={handleDeleteButton}
               variant="contained"
               endIcon={<DeleteIcon />}
               sx={{ color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' } }}
