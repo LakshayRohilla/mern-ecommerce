@@ -1,6 +1,7 @@
 const express = require('express');
 const routers = require('./routes/route');
 const productRoutes = require('./routes/product-routes');
+const userRoutes = require('./routes/user-routes');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
@@ -33,6 +34,7 @@ app.use((req, res, next) => {
 // Routers : 
 app.use(routers);
 app.use('/api/products', productRoutes); 
+app.use('/api/users', userRoutes);
 
 app.use((error, req, res, next) => { 
   if (res.headerSent) {
