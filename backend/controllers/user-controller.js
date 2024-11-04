@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const bcrypt = require("bcryptjs");
 const errorModel = require('../models/error-model');
+const jwt = require('jsonwebtoken');
 
 const authUser = async (req, res, next) => {
     const { email, password } = req.body;
@@ -18,7 +19,27 @@ const authUser = async (req, res, next) => {
             return next(errorModel(401, "Invalid credentials, could not log you in."));
         }
 
-        res.json({ userId: existingUser.id, email: existingUser.email });
+        let token;
+            try {
+                token = jwt.sign( 
+                { userId: existingUser.id, email: existingUser.email }, 
+                process.env.JWT_SECRET, // keep in mind for the login and signup keys should be the same.
+                { expiresIn: '1h' } 
+                );
+            } catch {
+                return next(errorModel(500, "Logging in failed, please try again later : Token error."));
+            }
+        
+        // Set JWT as HTTP-Only cookie
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'development', // we always keep the secure to true to have the https, but not in the development
+            sameSite: 'strict',// to prevent attacks
+            maxAge: 3600000 // 1 hr
+        })    
+
+
+        res.json({ userId: existingUser.id, email: existingUser.email, token}); // just token = token: token
     } catch (err) {
         return next(errorModel(500, "Login failed, please try again later."));
     }
