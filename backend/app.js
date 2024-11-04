@@ -4,12 +4,14 @@ const productRoutes = require('./routes/product-routes');
 const userRoutes = require('./routes/user-routes');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
+const bodyParser = require('body-parser');
 
 dotenv.config();
 connectDB(); // connect to MongoDB;
 
 
 const app = express();
+app.use(bodyParser.json()); // this will parse any incoming request body.
 
 // Serve static files from the 'assets' folder
 // app.use('/images', express.static('../frontend/src/assets/images'));
@@ -36,6 +38,7 @@ app.use(routers);
 app.use('/api/products', productRoutes); 
 app.use('/api/users', userRoutes);
 
+// Middleware for handling errors that we are adding in the controllers.
 app.use((error, req, res, next) => { 
   if (res.headerSent) {
     return next(error);
