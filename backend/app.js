@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user-routes');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 
 dotenv.config();
 connectDB(); // connect to MongoDB;
@@ -12,6 +13,9 @@ connectDB(); // connect to MongoDB;
 
 const app = express();
 app.use(bodyParser.json()); // this will parse any incoming request body.
+
+// Cookie parser middleware
+app.use(cookieParser());
 
 // Serve static files from the 'assets' folder
 // app.use('/images', express.static('../frontend/src/assets/images'));
