@@ -31,7 +31,7 @@ const authUser = async (req, res, next) => {
             }
         
         // Set JWT as HTTP-Only cookie
-        res.cookie('jwt', token, {
+        res.cookie('jwt', token, { // here jwt is the cookie name.
             httpOnly: true,
             secure: process.env.NODE_ENV !== 'development', // we always keep the secure to true to have the https, but not in the development
             sameSite: 'strict',// to prevent attacks
@@ -50,7 +50,8 @@ const registerUser = async (req, res, next) => {
 }
 
 const logoutUser = async (req, res, next) => {
-    res.send("Logout User !!!")
+    res.cookie('jwt', '' ,{ httpOnly: true, expires: new Date(0)}); // jwt is the name of the cookie, that we provided at the time we created it.
+    res.status(200).json({message: 'Logged out successfully !!'});
 }
 
 const getUserProfile = async (req, res, next) => {
@@ -79,12 +80,14 @@ const updateUser = async (req, res, next) => {
     res.send("Update user !!!")
 }
 
-exports.authUser = authUser;
-exports.registerUser = registerUser;
-exports.logoutUser = logoutUser;
-exports.getUserProfile = getUserProfile;
-exports.updateUserProfile = updateUserProfile;
-exports.getUsers = getUsers;
-exports.getUserById = getUserById;
-exports.deleteUser = deleteUser;
-exports.updateUser = updateUser;
+module.exports = {
+    authUser,
+    registerUser,
+    logoutUser,
+    getUserProfile,
+    updateUserProfile,
+    getUsers,
+    getUserById,
+    deleteUser,
+    updateUser
+  };

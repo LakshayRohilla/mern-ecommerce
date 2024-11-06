@@ -1,0 +1,43 @@
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
+
+// Will have 2 function in this file.
+// Protect, which will alow us to protect routes for user that are register
+// Admin, for users which are admins.
+
+const protect = async (req, res, next) => {
+  let token;
+
+  // Read JWT from the 'jwt' cookie
+  token = req.cookies.jwt; // here jwt is the cookie name that we created in the controller.
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET); // here decoded have the payload.
+
+      req.user = await User.findById(decoded.userId).select("-password"); 
+      // by doing "select("-password")" we are excluding the password
+      // user will tbe having the user data of which token we are decoding. Its will be a payload data
+
+      next();
+    } catch (error) {
+      res.status(401);
+      next(new Error("Not authorized, token failed"));
+    }
+  } else {
+    res.status(401);
+    next(new Error("Not authorized, no token"));
+  }
+};
+
+const admin = async (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next();
+  } else {
+    res.status(401);
+    next(new Error("Not authorized as an admin"));
+  }
+};
+
+
+module.exports = { protect, admin};
