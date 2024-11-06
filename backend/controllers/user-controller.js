@@ -1,7 +1,6 @@
 const User = require('../models/userModel');
 const bcrypt = require("bcryptjs");
 const errorModel = require('../models/error-model');
-const jwt = require('jsonwebtoken');
 const generateToken = require('../utils/generate-token');
 
 const authUser = async (req, res, next) => {
@@ -19,9 +18,10 @@ const authUser = async (req, res, next) => {
         if (!isValidPassword) {
             return next(errorModel(401, "Invalid credentials, could not log you in."));
         }
-        if(existingUser){
+        if(existingUser && isValidPassword){
             generateToken(res, existingUser._id, existingUser.email); // here, second & third param is payload
-            res.json({ userId: existingUser.id, email: existingUser.email, token}); // just token = token: token
+            // res.json({ userId: existingUser.id, email: existingUser.email, token}); // just token = token: token
+            res.json({ userId: existingUser.id, email: existingUser.email}); // removed the token else we have to return it from the generateToken.
         }
     } catch (err) {
         return next(errorModel(500, "Login failed, please try again later."));
@@ -59,11 +59,56 @@ const logoutUser = async (req, res, next) => {
 }
 
 const getUserProfile = async (req, res, next) => {
-    res.send("User Profile !!!")
+    // mern-app way | Yogantaram
+    // let userProfile;
+    // try{
+    //      userProfile = await User.findById(req.user._id);
+    // } catch (err) {
+    //     return next(errorModel(404, "Unable to find user profile !!"));
+    // }
+
+    // res.json({userProfile});
+    // res.json({userProfile: userProfile.toObject({ getters: true })}); // just to get the id without underscore. Which might not be nessesary everytime.
+
+    // MERN E-Commerce way -------------- I'd use this approach -----------------<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        // res.json({ // by this we can get the only those information that we would like to provide.
+        // _id: user._id,
+        // name: user.name,
+        // email: user.email,
+        // isAdmin: user.isAdmin,
+        // });
+        res.json({user});
+    } else {
+        return next(errorModel(404, "Unable to find user profile !!"));
+    }
 }
 
 const updateUserProfile = async (req, res, next) => {
-    res.send("Update User Profile !!!")
+    const user = await User.findById(req.user._id); 
+    // mern-app | Yogantaram (admin-controller --> patchProduct)
+    // In this we are getting the user Id from req.param. Bc this is how we are providing it using the endpoint.
+    // MERN E-Commerce
+    // req.user._id , we are getting this from the auth file. As we are setting req.user = payload that we get in the cookie.
+
+    if (user) {
+        // const {name, email, password} = req.body; See how its done in the Yogantaram
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+
+        if (req.body.password) {
+            user.password = await bcrypt.hash(req.body.password, 12);
+        }
+
+        const updatedUser = await user.save();
+        // we are stroing the user in a variable so that we could show the selected data in the response.
+        // You can also send the complete user in the updatedSuer in the response. Refer - Yogantaram project
+        res.json({_id: updatedUser._id, name: updatedUser.name, email: updatedUser.email, isAdmin: updatedUser.isAdmin});
+    } else {
+        return next(errorModel(404, "User not found!!"));
+    }
 }
 
 // For admin :
