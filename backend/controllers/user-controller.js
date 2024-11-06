@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const bcrypt = require("bcryptjs");
 const errorModel = require('../models/error-model');
 const jwt = require('jsonwebtoken');
+const generateToken = require('../utils/generate-token');
 
 const authUser = async (req, res, next) => {
     const { email, password } = req.body;
@@ -18,35 +19,38 @@ const authUser = async (req, res, next) => {
         if (!isValidPassword) {
             return next(errorModel(401, "Invalid credentials, could not log you in."));
         }
-
-        let token;
-            try {
-                token = jwt.sign( 
-                { userId: existingUser.id, email: existingUser.email }, 
-                process.env.JWT_SECRET, // keep in mind for the login and signup keys should be the same.
-                { expiresIn: '1h' } 
-                );
-            } catch {
-                return next(errorModel(500, "Logging in failed, please try again later : Token error."));
-            }
-        
-        // Set JWT as HTTP-Only cookie
-        res.cookie('jwt', token, { // here jwt is the cookie name.
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== 'development', // we always keep the secure to true to have the https, but not in the development
-            sameSite: 'strict',// to prevent attacks
-            maxAge: 3600000 // 1 hr
-        })    
-
-
-        res.json({ userId: existingUser.id, email: existingUser.email, token}); // just token = token: token
+        if(existingUser){
+            generateToken(res, existingUser._id, existingUser.email); // here, second & third param is payload
+            res.json({ userId: existingUser.id, email: existingUser.email, token}); // just token = token: token
+        }
     } catch (err) {
         return next(errorModel(500, "Login failed, please try again later."));
     }
 };
 
 const registerUser = async (req, res, next) => {
-    res.send("Register User !!!")
+    const { name, email, password } = req.body;
+
+    const userExists = await User.findOne({ email }); // here, just email means => email:email
+
+    if (userExists) {
+        return next(errorModel(400, "User already exists"));
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12); 
+
+    const user = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+    });
+
+    if (user) {
+        generateToken(res, user._id, user.email); // here, second & third param is payload
+        res.status(201).json({_id: user._id, name: user.name, email: user.email, isAdmin: user.isAdmin});
+    } else {
+        return next(errorModel(400, "User registration failed !!"));
+    }
 }
 
 const logoutUser = async (req, res, next) => {
