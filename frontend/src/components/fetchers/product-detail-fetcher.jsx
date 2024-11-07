@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 // import axios from 'axios';
 // import { useEffect, useState } from "react";
 import ProductDetailsLayout from "../shared/Layout/product-details-layout";
-import { useGetProductDetailsQuery } from "../../store/slices/productSlice";
+import { useGetProductDetailsQuery } from "../../store/slices/productApiSlice";
 import Spinner from '../shared/UI/spinner';
 import AlertMessage from "../shared/UI/alertMessage";
 
