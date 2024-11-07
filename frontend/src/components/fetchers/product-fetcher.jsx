@@ -3,7 +3,7 @@ import ProductCard from '../cards/product-card'
 // import DummyProducts from '../../products';
 import { Box, Grid } from "@mui/material";
 // import axios from 'axios';
-import { useGetProductsQuery } from "../../store/slices/productSlice";
+import { useGetProductsQuery } from "../../store/slices/productApiSlice";
 import Spinner from '../shared/UI/spinner';
 import AlertMessage from '../shared/UI/alertMessage';
 
