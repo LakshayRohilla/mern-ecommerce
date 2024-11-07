@@ -68,7 +68,10 @@ export default function NavBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const auth = false;
+  const auth = useSelector((state) => state.auth);
+  const { isAuth } = auth;
+  // We can also do :
+  // const isAuth = useSelector((state) => state.auth.isAuth);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -237,7 +240,7 @@ export default function NavBar() {
                   aria-haspopup="true"
                   color="inherit"
                 >
-                  {auth ? <AccountCircle /> : <LockPersonIcon />}
+                  {isAuth ? <AccountCircle /> : <LockPersonIcon />}
                 </IconButton>
                 {true && <Typography variant="body1" sx={{ color: 'inherit', ml: 0.5 }}>
                   Log In
@@ -258,8 +261,8 @@ export default function NavBar() {
           </Box>
         </Toolbar>
       </AppBar>
-      {auth && renderMobileMenu}
-      {auth && renderMenu}
+      {isAuth && renderMobileMenu}
+      {isAuth && renderMenu}
     </Box>
   );
 }
