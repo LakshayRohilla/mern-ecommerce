@@ -33,10 +33,10 @@ const CartFetcher = function () {
         </>  
       ) : (
           <Grid container spacing={2}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} sm={12} md={12} lg={8}>
               {cartItems.map((item) => <CartItem item={item}/>)}
             </Grid>
-            <Grid sx={{pl:1.5}} xs={12} md={4}>
+            <Grid sx={{pl:1.5}} xs={12} sm={12} md={12} lg={4}>
               <Paper elevation={4} >
                 <Box sx={{pr:6, pl:6, pb:0.4, pt:3}}>
                   <h1 style={{color:"grey"}}>Subtotal ({cartItems.reduce((acc, item)=> acc+item.qty, 0)}) Items</h1>
