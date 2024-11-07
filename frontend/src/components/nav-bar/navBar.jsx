@@ -17,6 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import LockPersonIcon from '@mui/icons-material/LockPerson';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -66,6 +67,8 @@ export default function NavBar() {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const auth = false;
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -198,37 +201,49 @@ export default function NavBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          {/* <Typography variant="body1" sx={{ color: 'inherit', marginRight: '-10px', alignSelf: 'center' }}>
-            Cart
-            </Typography> */}
-            <Box component={Link} to="/cart" sx={{ color: 'inherit', textDecoration: 'none' }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={cartItemsCount>0 ? cartItemsCount : 0} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
-            </Box>         
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
+              {/* Cart Icon */}
+              <Box component={Link} to="/cart" sx={{ color: 'inherit', textDecoration: 'none' }}>
+                <IconButton size="large" aria-label="show cart items" color="inherit">
+                  <Badge badgeContent={cartItemsCount > 0 ? cartItemsCount : 0} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+              </Box>
+
+              {/* Notifications Icon */}
+              <IconButton size="large" aria-label="show notifications" color="inherit">
+                <Badge badgeContent={17} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+
+              {/* Login Icon with Text */}
+              <Box
+                component={Link}
+                to="/login"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+                onClick={handleProfileMenuOpen}
+              >
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                  {auth ? <AccountCircle /> : <LockPersonIcon />}
+                </IconButton>
+                {true && <Typography variant="body1" sx={{ color: 'inherit', ml: 0.5 }}>
+                  Log In
+                </Typography>}
+              </Box>
+            </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -243,8 +258,8 @@ export default function NavBar() {
           </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+      {auth && renderMobileMenu}
+      {auth && renderMenu}
     </Box>
   );
 }
