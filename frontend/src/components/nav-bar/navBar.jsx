@@ -15,7 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
 
@@ -64,14 +64,18 @@ export default function NavBar() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const {cartItems} = useSelector(state=>state.cart);
   const cartItemsCount = cartItems.reduce((acc, item)=>acc+item.qty,0)
+  const navigate = useNavigate();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const auth = useSelector((state) => state.auth);
-  const { isAuth } = auth;
+  const { userInfo } = auth;
   // We can also do :
   // const isAuth = useSelector((state) => state.auth.isAuth);
+  // const { isAuth } = useSelector((state) => state.auth);
+  let name = userInfo?.name.split(" ");
+  name =  name?.[0] ? name[0][0].toUpperCase() + name[0].slice(1) : "";
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -90,6 +94,11 @@ export default function NavBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleProfileMenuLogOut = () =>{
+    // Of course this is not all, we have to dispatch the auth reducer part too.
+    navigate('/')
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -107,8 +116,9 @@ export default function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Hi, {name}</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
+      <MenuItem onClick={()=>{handleMenuClose(); handleProfileMenuLogOut();}}>Log out</MenuItem>
     </Menu>
   );
 
@@ -159,7 +169,7 @@ export default function NavBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>{name}</p>
       </MenuItem>
     </Menu>
   );
@@ -221,6 +231,30 @@ export default function NavBar() {
               </IconButton>
 
               {/* Login Icon with Text */}
+              {userInfo ? <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+                onClick={handleProfileMenuOpen}
+              >
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  color="inherit"
+                >
+                 <AccountCircle />
+                </IconButton>
+                <Typography variant="body1" sx={{ color: 'inherit', ml: 0.5 }}>
+                 {name}
+                </Typography>
+              </Box>
+              :
               <Box
                 component={Link}
                 to="/login"
@@ -240,12 +274,13 @@ export default function NavBar() {
                   aria-haspopup="true"
                   color="inherit"
                 >
-                  {isAuth ? <AccountCircle /> : <LockPersonIcon />}
+                   <LockPersonIcon />
                 </IconButton>
-                {true && <Typography variant="body1" sx={{ color: 'inherit', ml: 0.5 }}>
+                <Typography variant="body1" sx={{ color: 'inherit', ml: 0.5 }}>
                   Log In
-                </Typography>}
+                </Typography>
               </Box>
+              } 
             </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -261,8 +296,8 @@ export default function NavBar() {
           </Box>
         </Toolbar>
       </AppBar>
-      {isAuth && renderMobileMenu}
-      {isAuth && renderMenu}
+      {userInfo && renderMobileMenu}
+      {userInfo && renderMenu}
     </Box>
   );
 }

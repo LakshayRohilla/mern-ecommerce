@@ -21,7 +21,7 @@ const authUser = async (req, res, next) => {
         if(existingUser && isValidPassword){
             generateToken(res, existingUser._id, existingUser.email); // here, second & third param is payload
             // res.json({ userId: existingUser.id, email: existingUser.email, token}); // just token = token: token
-            res.json({ userId: existingUser.id, email: existingUser.email}); // removed the token else we have to return it from the generateToken.
+            res.json({ userId: existingUser._id, name: existingUser.name, email: existingUser.email,  isAdmin: existingUser.isAdmin}); // removed the token else we have to return it from the generateToken.
         }
     } catch (err) {
         return next(errorModel(500, "Login failed, please try again later."));

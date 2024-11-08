@@ -1,20 +1,22 @@
-import * as React from "react";
+import { useEffect } from 'react';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Link } from 'react-router-dom';
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
-import { useNavigate } from 'react-router-dom';
-
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Spinner from "../shared/UI/spinner";
+import { useLoginMutation } from "../../store/slices/userApiSlice";
+import { setCredentials } from "../../store/slices/authSlice";
+import { toast } from "react-toastify";
 
 function Copyright(props) {
   return (
@@ -25,9 +27,6 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      {/* <Link color="inherit" href="add the yogantaram">
-        Yogantaram
-      </Link> */}
       MERN E-Commerce {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -41,6 +40,19 @@ const defaultTheme = createTheme();
 export default function LogIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+
+  //Here we are taking care of the redirection what we added in the cart fetcher.
+  const { search } = useLocation();
+  const sp = new URLSearchParams(search);
+  const redirect = sp.get('redirect') || '/';
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -48,6 +60,15 @@ export default function LogIn() {
     const email =  data.get('email');
     const password = data.get('password');
     console.log(email, password);
+
+    try {
+      const res = await login({ email, password }).unwrap(); // login from userAPI slice. 
+      // " await login({ email, password })" will return a promise and we need to unwarp the resolved promise.
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
     // try{
     //   const response = await axios.post('http://localhost:5000/login', { email, password });
 
@@ -76,7 +97,8 @@ export default function LogIn() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            {isLoading && <Spinner/>}
+            <Avatar sx={{ m: 1, bgcolor: "black" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -117,6 +139,7 @@ export default function LogIn() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' }}}
+                disabled={isLoading}
               >
                 Log In
               </Button>
@@ -127,7 +150,7 @@ export default function LogIn() {
                   </Box>
                 </Grid>
                 <Grid item>
-                  <Box component={Link} sx={{ color: 'inherit', textDecoration: 'none', cursor:'pointer', '&:hover': { color: 'grey' }}} to='/signup' variant="body2" >
+                  <Box component={Link} to={redirect ? `/register?redirect=&{redirect}` : `/register`} sx={{ color: 'inherit', textDecoration: 'none', cursor:'pointer', '&:hover': { color: 'grey' }}} to='/signup' variant="body2" >
                     {"Don't have an account? Sign Up"}
                   </Box>
                 </Grid>
