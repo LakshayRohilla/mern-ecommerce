@@ -1,6 +1,7 @@
 import HomePage from "./pages/home-page";
 import ProductDetail from "./pages/product-detail";
-// import NavBar from "./components/nav-bar/navBar";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CartPage from "./pages/cart-page";
 import LogInPage from "./pages/login-page";
@@ -30,6 +31,7 @@ export default function App(){
             <Route path="/product-edit" element={<ProductEdit/>}/> */}
           </Routes>
         </BrowserRouter>
+        <ToastContainer/>
     </>
   );
 }
