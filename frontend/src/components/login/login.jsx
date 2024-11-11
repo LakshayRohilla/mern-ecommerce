@@ -66,6 +66,7 @@ export default function LogIn() {
       // " await login({ email, password })" will return a promise and we need to unwarp the resolved promise.
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
+      toast.success("Login Successful !!!");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

@@ -16,8 +16,11 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Link, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
+import { logout} from '../../store/slices/authSlice';
+import { useLogoutMutation } from '../../store/slices/userApiSlice';
+import { toast } from "react-toastify";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,6 +68,9 @@ export default function NavBar() {
   const {cartItems} = useSelector(state=>state.cart);
   const cartItemsCount = cartItems.reduce((acc, item)=>acc+item.qty,0)
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [logoutApiCall, {isLoading, isError}] = useLogoutMutation();
+  // Its not mandetory to keep the name same as we have in the slice. Thats why we kept it like this "logoutApiCall"
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -94,9 +100,15 @@ export default function NavBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const handleProfileMenuLogOut = () =>{
-    // Of course this is not all, we have to dispatch the auth reducer part too.
-    navigate('/')
+  const handleProfileMenuLogOut = async () =>{
+    try{
+      const res = await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate('/login');
+      toast.success(res.message);
+    } catch(err) {
+      toast.error(err?.data?.message || err.error);
+    }
   }
 
   const menuId = 'primary-search-account-menu';
