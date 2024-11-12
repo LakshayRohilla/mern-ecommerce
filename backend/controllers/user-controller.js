@@ -30,6 +30,7 @@ const authUser = async (req, res, next) => {
 
 const registerUser = async (req, res, next) => {
     const { name, email, password } = req.body;
+    // console.log(`This is from the registerUser endpoint ${name}, ${email}, ${password}`);
 
     const userExists = await User.findOne({ email }); // here, just email means => email:email
 
