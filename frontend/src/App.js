@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import CartPage from "./pages/cart-page";
 import LogInPage from "./pages/login-page";
 import SignUpPage from './pages/signUp-page.jsx'
+import ShippingPage from './pages/shipping-page.jsx'
 
 export default function App(){
   return (
@@ -19,6 +20,7 @@ export default function App(){
             <Route path="/cart" element={<CartPage/>}/>
             <Route path="/login" element={<LogInPage/>}/>
             <Route path="/signUp" element={<SignUpPage/>}/>
+            <Route path="/shipping" element={<ShippingPage/>}/>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
             <Route path='/product/:pid' element={<ProductDetails/>}/>

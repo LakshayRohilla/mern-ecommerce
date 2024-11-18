@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,7 +7,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -18,6 +18,7 @@ import { useRegisterMutation } from "../../store/slices/userApiSlice";
 import { setCredentials } from "../../store/slices/authSlice";
 import { toast } from "react-toastify";
 import Spinner from "../shared/UI/spinner";
+import { saveShippingAddress } from '../../store/slices/cartSlice';
 
 function Copyright(props) {
   return (
@@ -39,26 +40,32 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
-//   const [error, setError] = useState();
-//   const [open, setOpen] = useState(false);
+export default function Shipping() {
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+
+  const [address, setAddress] = useState(shippingAddress.address || '');
+  const [city, setCity] = useState(shippingAddress.city || '');
+  const [code, setCode] = useState(shippingAddress.code || '');
+  const [country, setCountry] = useState(shippingAddress.country || '');
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [register, { isLoading, isError }] = useRegisterMutation();
+//   const [register, { isLoading, isError }] = useRegisterMutation();
   
-  const { userInfo } = useSelector((state) => state.auth);
+//   const { userInfo } = useSelector((state) => state.auth);
 
-  //Here we are taking care of the redirection what we added in the cart fetcher.
-  const { search } = useLocation();
-  const sp = new URLSearchParams(search);
-  const redirect = sp.get('redirect') || '/';
+//   //Here we are taking care of the redirection what we added in the cart fetcher.
+//   const { search } = useLocation();
+//   const sp = new URLSearchParams(search);
+//   const redirect = sp.get('redirect') || '/';
 
-  // In case we are logged in.
-  useEffect(() => {
-    if (userInfo) {
-      navigate(redirect);
-    }
-  }, [navigate, redirect, userInfo]);
+//   // In case we are logged in.
+//   useEffect(() => {
+//     if (userInfo) {
+//       navigate(redirect);
+//     }
+//   }, [navigate, redirect, userInfo]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -68,50 +75,30 @@ export default function SignUp() {
     //   password: data.get('password'),
     //   userName: data.get('userName')
     // });
-    const name = data.get('name');
-    const email =  data.get('email');
-    const password = data.get('password');
-    const confirmPassword = data.get('confirmPassword');
+    setAddress(data.get('address'));
+    setCity(data.get('city'));
+    setCode(data.get('code'));
+    setCountry(data.get('country'));
 
-    // try{
-    //   const response = await axios.post('http://localhost:5000/signup', { userName, email, password });
-    //   console.log(response);
-    //   alert("Sign up successfull !!!!");
-    //   if (response.statusText==="Created") {
-    //     dispatch(authActions.login({token: response.data.token}));
-    //     navigate('/'); // Redirect to the home route
+    dispatch(saveShippingAddress({ address, city, code, country }));
+    navigate('/payment');
+
+    // try {
+    //   console.log(name, email, password);
+    //     const res = await register({ name, email, password }).unwrap(); // login from userAPI slice. 
+    //     // " await login({ email, password })" will return a promise and we need to unwarp(handle/extract) the resolved promise.
+    //     dispatch(setCredentials({ ...res }));
+    //     navigate('/');
+    //     toast.success("Registration Successful !!!");
+    //   } catch (err) {
+    //     toast.error(err?.data?.message || err.error);
     //   }
-    // } catch (err){
-    //   setError(err.response?.data?.message + ' ' + err);
-    //   setOpen(true);
-    // }
-    if (password !== confirmPassword) {
-        toast.error('Passwords do not match!!!');
-        return;
-      } else {
-    try {
-      console.log(name, email, password);
-        const res = await register({ name, email, password }).unwrap(); // login from userAPI slice. 
-        // " await login({ email, password })" will return a promise and we need to unwarp(handle/extract) the resolved promise.
-        dispatch(setCredentials({ ...res }));
-        navigate('/');
-        toast.success("Registration Successful !!!");
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
-    }
   };
-
-//   const errorHandler = () => {
-//     setError(null);
-//     setOpen(false);
-//   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-      {/* <ErrorModal open={open} errorMessage={error} handleClose={errorHandler} /> */}
-      {isError && <AlertMessage severity="error">Registration Failed !!! </AlertMessage>}
+      {/* {isError && <AlertMessage severity="error">Registration Failed !!! </AlertMessage>} */}
         <CssBaseline />
         <Box
           sx={{
@@ -121,62 +108,58 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-            {isLoading && <Spinner/>}
+            {/* {isLoading && <Spinner/>} */}
           <Avatar sx={{ m: 1, bgcolor: 'black' }}>
-            <LockOutlinedIcon />
+            <LocalShippingIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Shipping
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} >
                 <TextField
-                  autoComplete="given-name"
-                  name="name"
+                value={address}
+                  autoComplete="address"
+                  name="address"
                   required
                   fullWidth
-                  id="name"
-                  label="User Name"
+                  id="address"
+                  label="Enter address"
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                value={city}
                   required
                   fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  id="city"
+                  label="Enter city"
+                  name="city"
+                  autoComplete="city"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                value={code}
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  id="code"
+                  label="Postal Code"
+                  name="code"
+                  autoComplete="code"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                value={country}
                   required
                   fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirmPassword"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  id="country"
+                  label="Enter country"
+                  name="country"
+                  autoComplete="country"
                 />
               </Grid>
             </Grid>
@@ -185,17 +168,17 @@ export default function SignUp() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' }}}
-                disabled={isLoading}
+                // disabled={isLoading}
               >
-                Sign Up
+                Continue
               </Button>
-            <Grid container justifyContent="flex-end">
+            {/* <Grid container justifyContent="flex-end">
               <Grid item>
                 <Box component={Link} to={redirect ? `/login?redirect=${redirect}` : '/login'} sx={{ color: 'inherit', textDecoration: 'none', cursor:'pointer', '&:hover': { color: 'grey' }}}variant="body2" >
                     {"Already have an account? Log in"}
                 </Box>
               </Grid>
-            </Grid>
+            </Grid> */}
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
