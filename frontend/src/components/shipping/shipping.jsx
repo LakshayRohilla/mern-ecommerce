@@ -127,6 +127,7 @@ export default function Shipping() {
                   id="address"
                   label="Enter address"
                   autoFocus
+                  onChange={(e) => setAddress(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -138,6 +139,7 @@ export default function Shipping() {
                   label="Enter city"
                   name="city"
                   autoComplete="city"
+                  onChange={(e) => setCity(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -149,6 +151,7 @@ export default function Shipping() {
                   label="Postal Code"
                   name="code"
                   autoComplete="code"
+                  onChange={(e) => setCode(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -160,6 +163,7 @@ export default function Shipping() {
                   label="Enter country"
                   name="country"
                   autoComplete="country"
+                  onChange={(e) => setCountry(e.target.value)}
                 />
               </Grid>
             </Grid>
