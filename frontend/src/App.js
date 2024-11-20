@@ -7,7 +7,8 @@ import CartPage from "./pages/cart-page";
 import LogInPage from "./pages/login-page";
 import SignUpPage from './pages/signUp-page.jsx'
 import ShippingPage from './pages/shipping-page.jsx'
-import PrivateRoute from './components/private-route.jsx'
+import PrivateRoute from './components/private-route.jsx';
+import PaymentPage from './pages/paymentPage.jsx';
 
 export default function App(){
   return (
@@ -23,6 +24,7 @@ export default function App(){
             <Route path="/signUp" element={<SignUpPage/>}/>
             <Route path="" element={<PrivateRoute/>}>
               <Route path="/shipping" element={<ShippingPage/>}/>
+              <Route path="/payment" element={<PaymentPage/>}/>
             </Route>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
