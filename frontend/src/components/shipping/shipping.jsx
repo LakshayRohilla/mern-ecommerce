@@ -19,6 +19,7 @@ import { setCredentials } from "../../store/slices/authSlice";
 import { toast } from "react-toastify";
 import Spinner from "../shared/UI/spinner";
 import { saveShippingAddress } from '../../store/slices/cartSlice';
+import CheckoutSteps from '../checkoutSteps';
 
 function Copyright(props) {
   return (
@@ -96,97 +97,100 @@ export default function Shipping() {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-      {/* {isError && <AlertMessage severity="error">Registration Failed !!! </AlertMessage>} */}
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-            {/* {isLoading && <Spinner/>} */}
-          <Avatar sx={{ m: 1, bgcolor: 'black' }}>
-            <LocalShippingIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Shipping
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} >
-                <TextField
-                value={address}
-                  autoComplete="address"
-                  name="address"
-                  required
+    <>
+      <CheckoutSteps currentStep={1} />
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs">
+        {/* {isError && <AlertMessage severity="error">Registration Failed !!! </AlertMessage>} */}
+          <CssBaseline />
+          <Box
+            sx={{
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+              {/* {isLoading && <Spinner/>} */}
+            <Avatar sx={{ m: 1, bgcolor: 'black' }}>
+              <LocalShippingIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Shipping
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} >
+                  <TextField
+                  value={address}
+                    autoComplete="address"
+                    name="address"
+                    required
+                    fullWidth
+                    id="address"
+                    label="Enter address"
+                    autoFocus
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                  value={city}
+                    required
+                    fullWidth
+                    id="city"
+                    label="Enter city"
+                    name="city"
+                    autoComplete="city"
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                  value={code}
+                    required
+                    fullWidth
+                    id="code"
+                    label="Postal Code"
+                    name="code"
+                    autoComplete="code"
+                    onChange={(e) => setCode(e.target.value)}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                  value={country}
+                    required
+                    fullWidth
+                    id="country"
+                    label="Enter country"
+                    name="country"
+                    autoComplete="country"
+                    onChange={(e) => setCountry(e.target.value)}
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                  type="submit"
                   fullWidth
-                  id="address"
-                  label="Enter address"
-                  autoFocus
-                  onChange={(e) => setAddress(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                value={city}
-                  required
-                  fullWidth
-                  id="city"
-                  label="Enter city"
-                  name="city"
-                  autoComplete="city"
-                  onChange={(e) => setCity(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                value={code}
-                  required
-                  fullWidth
-                  id="code"
-                  label="Postal Code"
-                  name="code"
-                  autoComplete="code"
-                  onChange={(e) => setCode(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                value={country}
-                  required
-                  fullWidth
-                  id="country"
-                  label="Enter country"
-                  name="country"
-                  autoComplete="country"
-                  onChange={(e) => setCountry(e.target.value)}
-                />
-              </Grid>
-            </Grid>
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2, color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' }}}
-                // disabled={isLoading}
-              >
-                Continue
-              </Button>
-            {/* <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Box component={Link} to={redirect ? `/login?redirect=${redirect}` : '/login'} sx={{ color: 'inherit', textDecoration: 'none', cursor:'pointer', '&:hover': { color: 'grey' }}}variant="body2" >
-                    {"Already have an account? Log in"}
-                </Box>
-              </Grid>
-            </Grid> */}
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2, color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' }}}
+                  // disabled={isLoading}
+                >
+                  Continue
+                </Button>
+              {/* <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Box component={Link} to={redirect ? `/login?redirect=${redirect}` : '/login'} sx={{ color: 'inherit', textDecoration: 'none', cursor:'pointer', '&:hover': { color: 'grey' }}}variant="body2" >
+                      {"Already have an account? Log in"}
+                  </Box>
+                </Grid>
+              </Grid> */}
+            </Box>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+          <Copyright sx={{ mt: 5 }} />
+        </Container>
+      </ThemeProvider>
+    </>
   );
 }
