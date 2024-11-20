@@ -6,7 +6,7 @@ const ShippingPage = function () {
   return (
     <>
       <NavBar />
-      <Shipping/>
+      <Shipping />
       <Footer />
     </>
   );
