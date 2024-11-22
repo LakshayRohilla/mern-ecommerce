@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
+const orderRoutes = require('./routes/orderRoutes');
 
 dotenv.config();
 connectDB(); // connect to MongoDB;
@@ -41,6 +42,7 @@ app.use((req, res, next) => {
 app.use(routers);
 app.use('/api/products', productRoutes); 
 app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Middleware for handling errors that we are adding in the controllers.
 app.use((error, req, res, next) => { 
