@@ -19,7 +19,7 @@ import { setCredentials } from "../../store/slices/authSlice";
 import { toast } from "react-toastify";
 import Spinner from "../shared/UI/spinner";
 import { saveShippingAddress } from '../../store/slices/cartSlice';
-import CheckoutSteps from '../checkoutSteps';
+import CheckoutSteps from '../shared/UI/checkoutSteps';
 
 function Copyright(props) {
   return (

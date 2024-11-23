@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { savePaymentMethod } from "../store/slices/cartSlice";
-import CheckoutSteps from "../components/checkoutSteps";
+import CheckoutSteps from "../components/shared/UI/checkoutSteps";
 import { Box, Typography, Radio, RadioGroup, FormControlLabel, Button, Paper } from '@mui/material';
 
 const PaymentPage = () => {
