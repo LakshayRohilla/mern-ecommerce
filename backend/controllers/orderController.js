@@ -21,7 +21,8 @@ const addOrderItems = async (req, res, next) => {
         product: x._id,
         _id: undefined,
       })),
-      user: req.user._id,
+      user: req.user._id, 
+      // As we have used protect in the route file from there we can use the req.user that we have in the potect function.
       shippingAddress,
       paymentMethod,
       itemsPrice,
