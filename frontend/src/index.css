@@ -17,3 +17,12 @@ code {
   font-weight: 600;
   padding-left: 0.5rem;
 }
+
+.grey-heading{
+  font-weight: bolder !important;
+  color: grey;
+}
+
+.grey-text{
+  color: grey !important;
+}
