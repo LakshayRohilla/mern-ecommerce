@@ -10,6 +10,7 @@ import ShippingPage from './pages/shipping-page.jsx'
 import PrivateRoute from './components/private-route.jsx';
 import PaymentPage from './pages/paymentPage.jsx';
 import PlaceOrderPage from './pages/placeOrderPage.jsx'
+import OrderPage from './pages/orderPage.jsx'
 
 export default function App(){
   return (
@@ -27,6 +28,7 @@ export default function App(){
               <Route path="/shipping" element={<ShippingPage/>}/>
               <Route path="/payment" element={<PaymentPage/>}/>
               <Route path="/placeorder" element={<PlaceOrderPage/>}/>
+              <Route path="order/:oid" element={<OrderPage/>}/>
             </Route>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
