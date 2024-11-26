@@ -61,9 +61,10 @@ const getOrderById = async (req, res, next) => {
 
   try {
     // const order = await Order.findById(req.params.id).populate( 
-    const order = await Order.findById(req.params.id).populate("user", "name email"); 
+     order = await Order.findById(orderID).populate("user", "name email"); 
     // populate() in Mongoose replaces a referenced object ID (like user in the Order model) with the 
     // actual document data from the related collection (e.g., the User model).
+    // What we are getting in the output is user:{email:"", name:"", _id:""}
 
     // Here, it fetches the user associated with the Order by its ID and includes only the name and email 
     // fields in the response.
