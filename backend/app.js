@@ -44,6 +44,10 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 
+app.get('/api/config/paypal', (req, res, next) =>
+  res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
+);
+
 // Middleware for handling errors that we are adding in the controllers.
 app.use((error, req, res, next) => { 
   if (res.headerSent) {
