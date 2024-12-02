@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { savePaymentMethod } from "../store/slices/cartSlice";
 import CheckoutSteps from "../components/shared/UI/checkoutSteps";
-import { Box, Typography, Radio, RadioGroup, FormControlLabel, Button, Paper } from '@mui/material';
+import { Box, Typography, Radio, RadioGroup, FormControlLabel, Button } from '@mui/material';
 
 const PaymentPage = () => {
   const navigate = useNavigate();

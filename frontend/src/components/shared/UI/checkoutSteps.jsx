@@ -4,9 +4,6 @@ import Stack from '@mui/material/Stack';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import SettingsIcon from '@mui/icons-material/Settings';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
@@ -16,23 +13,23 @@ import Box from '@mui/material/Box';
 
 
 // Custom Step Icon Root
-const QontoStepIconRoot = styled('div')(({ ownerState }) => ({
-  color: ownerState.active ? '#784af4' : '#eaeaf0',
-  display: 'flex',
-  height: 22,
-  alignItems: 'center',
-  '& .QontoStepIcon-completedIcon': {
-    color: '#784af4',
-    zIndex: 1,
-    fontSize: 18,
-  },
-  '& .QontoStepIcon-circle': {
-    width: 8,
-    height: 8,
-    borderRadius: '50%',
-    backgroundColor: 'currentColor',
-  },
-}));
+// const QontoStepIconRoot = styled('div')(({ ownerState }) => ({
+//   color: ownerState.active ? '#784af4' : '#eaeaf0',
+//   display: 'flex',
+//   height: 22,
+//   alignItems: 'center',
+//   '& .QontoStepIcon-completedIcon': {
+//     color: '#784af4',
+//     zIndex: 1,
+//     fontSize: 18,
+//   },
+//   '& .QontoStepIcon-circle': {
+//     width: 8,
+//     height: 8,
+//     borderRadius: '50%',
+//     backgroundColor: 'currentColor',
+//   },
+// }));
 
 // Custom Step Connector
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
