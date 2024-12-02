@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import AlertMessage from "../shared/UI/alertMessage";
-import { useRegisterMutation } from "../../store/slices/userApiSlice";
-import { setCredentials } from "../../store/slices/authSlice";
-import { toast } from "react-toastify";
-import Spinner from "../shared/UI/spinner";
 import { saveShippingAddress } from '../../store/slices/cartSlice';
 import CheckoutSteps from '../shared/UI/checkoutSteps';
 

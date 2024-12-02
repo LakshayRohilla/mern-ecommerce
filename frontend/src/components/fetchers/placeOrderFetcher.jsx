@@ -1,10 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useCreateOrderMutation } from "../../store/slices/ordersApiSlice";
 import CheckoutSteps from "../shared/UI/checkoutSteps";
 import { toast } from "react-toastify";
-import AlertMessage from "../shared/UI/alertMessage";
 import Spinner from "../shared/UI/spinner";
 import { clearCartItems } from "../../store/slices/cartSlice";
 import { Box, Paper, Button, Divider, Typography } from "@mui/material";

@@ -3,13 +3,12 @@ import { Grid, Typography, Box } from '@mui/material';
 import ProdRating from '../UI/prod-rating';
 import ProductDetailsCartSection from './product-details-cart-section';
 import { addToCart } from '../../../store/slices/cartSlice';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { SnackbarProvider } from "notistack";
 
 const ProductDetailsLayout = ({ product }) => {
   const dispatch = useDispatch(); 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const onCartAddHandler = function(qty) {
       dispatch(addToCart({...product, qty}));

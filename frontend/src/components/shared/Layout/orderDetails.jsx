@@ -1,7 +1,6 @@
 // import { Link, useParams } from "react-router-dom";
 import AlertMessage from "../UI/alertMessage";
-import Spinner from "../UI/spinner";
-import { Box, Paper, Button, Divider, Typography } from "@mui/material";
+import { Box, Paper, Divider, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import PlaceOrderCartItems from '../Layout/placeOrderCartItems';
 
