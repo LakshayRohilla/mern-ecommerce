@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux'
 import store from '../src/store/index'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,7 +13,9 @@ root.render(
   // To eradiate any sort of confusion its better to comment it.
   // <React.StrictMode>
   <Provider store={store}>
-    <App />
+    <PayPalScriptProvider deferLoading={true}>
+      <App />
+    </PayPalScriptProvider>
   </Provider>
   // </React.StrictMode>
 );
