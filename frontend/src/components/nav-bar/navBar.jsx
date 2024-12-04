@@ -111,6 +111,10 @@ export default function NavBar() {
     }
   }
 
+  const handleMyProfileClick = () => {
+      navigate('/profile');
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -129,7 +133,7 @@ export default function NavBar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Hi, {name}</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
+      <MenuItem onClick={()=>{handleMenuClose(); handleMyProfileClick();}}>My Profile</MenuItem>
       <MenuItem onClick={()=>{handleMenuClose(); handleProfileMenuLogOut();}}>Log out</MenuItem>
     </Menu>
   );
