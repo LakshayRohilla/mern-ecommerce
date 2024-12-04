@@ -42,15 +42,16 @@ const getMyOrders = async (req, res, next) => {
   //   res.send("get my order");
   let orders;
   try {
-    orders = await Order.find({ user: req.user._id });
+    orders = await Order.find({ user: req.user._id }); // As we are logged in so we are getting user id from the token itself.
+    // Check the Auth middleware for this.
   } catch (err) {
     const error = new Error("Fetching orders failed, please try again later.");
     error.code = 500;
     return next(error);
   }
-  res.status(200).json({orders: orders.map((product) => order.toObject({ getters: true })),}); // just to have the id field as well.
+  // res.status(200).json({orders: orders.map((product) => order.toObject({ getters: true })),}); // just to have the id field as well.
   // We can also do.
-  // res.json(orders)
+  res.status(200).json(orders)
 };
 
 const getOrderById = async (req, res, next) => {
