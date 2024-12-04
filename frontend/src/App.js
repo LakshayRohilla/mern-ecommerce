@@ -10,7 +10,8 @@ import ShippingPage from './pages/shipping-page.jsx'
 import PrivateRoute from './components/private-route.jsx';
 import PaymentPage from './pages/paymentPage.jsx';
 import PlaceOrderPage from './pages/placeOrderPage.jsx'
-import OrderPage from './pages/orderPage.jsx'
+import OrderPage from './pages/orderPage.jsx';
+import ProfilePage from './pages/profilePage.jsx';
 
 export default function App(){
   return (
@@ -24,11 +25,13 @@ export default function App(){
             <Route path="/cart" element={<CartPage/>}/>
             <Route path="/login" element={<LogInPage/>}/>
             <Route path="/signUp" element={<SignUpPage/>}/>
+            <Route path="*" element={<p>404 Page Not Found</p>} />
             <Route path="" element={<PrivateRoute/>}>
               <Route path="/shipping" element={<ShippingPage/>}/>
               <Route path="/payment" element={<PaymentPage/>}/>
               <Route path="/placeorder" element={<PlaceOrderPage/>}/>
               <Route path="order/:oid" element={<OrderPage/>}/>
+              <Route path="/profile" element={<ProfilePage/>}/>
             </Route>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
