@@ -4,12 +4,13 @@ import { Box, Paper, Divider, Typography, Button} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import PlaceOrderCartItems from '../Layout/placeOrderCartItems';
 import Spinner from '../UI/spinner'
-import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPaypalClientIdQuery } from '../../../store/slices/ordersApiSlice'
+import { useGetOrderDetailsQuery, usePayOrderMutation, useGetPaypalClientIdQuery, useDeliverOrderMutation } from '../../../store/slices/ordersApiSlice'
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { toast } from "react-toastify";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 const OrderDetails = ({orderDetails, orderId, refetch}) => {
     let displayName = orderDetails?.order?.user?.name;
@@ -19,6 +20,7 @@ const OrderDetails = ({orderDetails, orderId, refetch}) => {
     const {data: paypal, isLoading: loadingPayPal, error: errorPayPal } = useGetPaypalClientIdQuery();
     const { userInfo } = useSelector((state) => state.auth);
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
+    const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
 
     useEffect(() => {
       if (!errorPayPal && !loadingPayPal && paypal.clientId) {
@@ -76,6 +78,16 @@ const OrderDetails = ({orderDetails, orderId, refetch}) => {
         });
     }
 
+    const deliverHandler = async () => {
+      try{
+        await deliverOrder(orderId);
+        refetch();
+        toast.success('Order Delivered');
+      } catch (err){
+        toast.error(err?.data?.message || err.error)
+      }
+    };
+
     return (
         <Box sx={{ p: 12 }}>
             <Typography variant='h4' className="grey-heading" sx={{mb:2}}>Order : {orderDetails?.order?.id}</Typography>
@@ -98,10 +110,17 @@ const OrderDetails = ({orderDetails, orderId, refetch}) => {
               </Typography>
               <Typography sx={{ pb: 2, ml: 1 }}>{orderDetails?.order?.shippingAddress?.address}</Typography>
             </Box>
-            {orderDetails?.order?.isDelivered === false && 
+            {!orderDetails?.order?.isDelivered && 
                 <Box sx={{m:-6}}>
                     <AlertMessage severity="error" >
                         Not Delivered
+                    </AlertMessage>
+                </Box>
+            }
+            {orderDetails?.order?.isDelivered && 
+                <Box sx={{m:-6}}>
+                    <AlertMessage severity="success" >
+                        Delivered on {orderDetails?.order?.deliveredAt} 
                     </AlertMessage>
                 </Box>
             }
@@ -200,6 +219,22 @@ const OrderDetails = ({orderDetails, orderId, refetch}) => {
                   )}
                   </>
               )}
+               {/* {MARK AS DELIVERED PLACEHOLDER} */}
+               {loadingDeliver && <Spinner minimumHeight={'10vh'}/>}
+                {userInfo &&
+                  userInfo.isAdmin &&
+                  orderDetails?.order?.isPaid &&
+                  !orderDetails?.order?.isDelivered && (
+                    <Box sx={{display:'flex', justifyContent:'center', pb:1.5, pt:2}}>
+                        <Button onClick={deliverHandler}
+                        variant="contained"
+                        endIcon={<TaskAltIcon />}
+                        sx={{ color: 'white', backgroundColor: 'black', '&:hover': { backgroundColor: 'grey' } }}
+                      >
+                        Mark As Delivered
+                      </Button>
+                  </Box>
+                  )}
             </Paper>
           </Grid>
         </Grid>
