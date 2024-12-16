@@ -75,8 +75,12 @@ export default function NavBar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const [adminAnchorEl, setAdminAnchorEl] = useState(null);
+  const isAdminMenuOpen = Boolean(adminAnchorEl);
+
   const auth = useSelector((state) => state.auth);
   const { userInfo } = auth;
+  console.log(userInfo);
   // We can also do :
   // const isAuth = useSelector((state) => state.auth.isAuth);
   // const { isAuth } = useSelector((state) => state.auth);
@@ -115,6 +119,14 @@ export default function NavBar() {
       navigate('/profile');
   }
 
+  const handleAdminMenuOpen = (event) => {
+    setAdminAnchorEl(event.currentTarget);
+  };
+  
+  const handleAdminMenuClose = () => {
+    setAdminAnchorEl(null);
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -137,6 +149,37 @@ export default function NavBar() {
       <MenuItem onClick={()=>{handleMenuClose(); handleProfileMenuLogOut();}}>Log out</MenuItem>
     </Menu>
   );
+
+  const adminMenuId = 'admin-menu';
+  const renderAdminMenu = (
+    <Menu
+      anchorEl={adminAnchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={adminMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isAdminMenuOpen}
+      onClose={handleAdminMenuClose}
+      sx={{ zIndex: 1301 }} // Ensure it's on top
+    >
+      <MenuItem component={Link} to="/admin/orderList" onClick={handleAdminMenuClose}>
+        Orders
+      </MenuItem>
+      <MenuItem component={Link} to="/admin/userList" onClick={handleAdminMenuClose}>
+        Users
+      </MenuItem>
+      <MenuItem component={Link} to="/admin/productList" onClick={handleAdminMenuClose}>
+        Products
+      </MenuItem>
+    </Menu>
+  );
+  
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -297,7 +340,35 @@ export default function NavBar() {
                 </Typography>
               </Box>
               } 
+               {/* Admin Dropdown */}
+               {userInfo?.isAdmin && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    ml: 2, // Space out from profile menu
+                  }}
+                  onClick={handleAdminMenuOpen}
+                >
+                  <IconButton
+                    size="large"
+                    edge="end"
+                    aria-label="admin menu"
+                    aria-controls={adminMenuId}
+                    aria-haspopup="true"
+                    color="inherit"
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                  {/* <Typography variant="body1" sx={{ color: 'inherit', ml: 0.5 }}>
+                    Admin
+                  </Typography> */}
+                </Box>
+              )}
             </Box>
+
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -314,6 +385,7 @@ export default function NavBar() {
       </AppBar>
       {userInfo && renderMobileMenu}
       {userInfo && renderMenu}
+      {userInfo?.isAdmin && renderAdminMenu}
     </Box>
   );
 }
