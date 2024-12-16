@@ -110,7 +110,18 @@ const updateOrderToPaid = async (req, res, next) => {
 
 const updateOrderToDelivered = async (req, res, next) => {
   // res.json({"message":'add order items'});
-  res.send("update order to delivered");
+  // res.send("update order to delivered");
+  const order = await Order.findById(req.params.id);
+  if (order) {
+    order.isDelivered = true;
+    order.deliveredAt = Date.now();
+    const updatedOrder = await order.save();
+    res.json(updatedOrder);
+  } else {
+    const error = new Error("Order not found.");
+    error.code = 404;
+    return next(error);
+  }
 };
 
 const getOrders = async (req, res, next) => {
