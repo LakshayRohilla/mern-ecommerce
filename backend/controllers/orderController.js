@@ -115,7 +115,9 @@ const updateOrderToDelivered = async (req, res, next) => {
 
 const getOrders = async (req, res, next) => {
   // res.json({"message":'add order items'});
-  res.send("get all orders");
+  // res.send("get all orders");
+  const orders = await Order.find({}).populate('user', 'id name');
+  res.json(orders);
 };
 
 module.exports = {
