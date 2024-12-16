@@ -4,14 +4,15 @@ import { toast } from "react-toastify";
 import AlertMessage from "../shared/UI/alertMessage";
 import Spinner from "../shared/UI/spinner";
 import { useProfileMutation } from "../../store/slices/userApiSlice";
-// import { useGetMyOrdersQuery } from "../../store/slices/ordersApiSlice";
+import { useGetMyOrdersQuery } from "../../store/slices/ordersApiSlice";
 import { setCredentials } from "../../store/slices/authSlice";
-import { TextField, Box, Button, Typography } from "@mui/material";
+import { TextField, Box, Button, Typography, Grid } from "@mui/material";
 import PublishIcon from "@mui/icons-material/Publish";
+import UserProfileOrdersTable from '../shared/Layout/userProfileOrdersTable';
 
 const ProfileFetcher = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  //   const { data: orders, isLoading, error } = useGetMyOrdersQuery();
+    const { data: orders, isLoading, error } = useGetMyOrdersQuery();
   const [updateProfile, { isLoading: loadingUpdateProfile }] =
     useProfileMutation();
 
@@ -54,51 +55,68 @@ const ProfileFetcher = () => {
       <Typography variant="h4" gutterBottom className="grey-heading">
         User Profile
       </Typography>
-      <Box
-        component="form"
-        onSubmit={submitHandler}
-        noValidate
-        sx={{ display: "flex", flexDirection: "column", m: 3, gap: 2 }}
-      >
-        <TextField
-          required
-          autoFocus
-          fullWidth
-          name="name"
-          label="Name"
-          type="text"
-          autoComplete="name"
-          defaultValue={userInfo?.name || ""}
-        />
-        <TextField
-          required
-          name="email"
-          autoComplete="email"
-          label="Email Address"
-          type="text"
-          defaultValue={userInfo?.email || ""}
-        />
-        <TextField required name="password" label="Password" type="password" />
-        <TextField
-          required
-          name="confirmPassword"
-          label="Confirm Password"
-          type="password"
-        />
-        <Button
-          variant="contained"
-          endIcon={<PublishIcon />}
-          sx={{
-            color: "white",
-            backgroundColor: "black",
-            "&:hover": { backgroundColor: "grey" },
-          }}
-          type="submit"
-        >
-          Update
-        </Button>
-        {loadingUpdateProfile && <Spinner minimumHeight={'10vh'}/>}
-      </Box>
+      <Grid container spacing={2}>
+      <Grid item xs={12} md={4}>
+        <Box
+          component="form"
+          onSubmit={submitHandler}
+          noValidate
+          sx={{ display: "flex", flexDirection: "column", m: 3, gap: 2 }}>
+          <TextField
+            required
+            autoFocus
+            fullWidth
+            name="name"
+            label="Name"
+            type="text"
+            autoComplete="name"
+            defaultValue={userInfo?.name || ""}
+          />
+          <TextField
+            required
+            name="email"
+            autoComplete="email"
+            label="Email Address"
+            type="text"
+            defaultValue={userInfo?.email || ""}
+          />
+          <TextField required name="password" label="Password" type="password" />
+          <TextField
+            required
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+          />
+          <Button
+            variant="contained"
+            endIcon={<PublishIcon />}
+            sx={{
+              color: "white",
+              backgroundColor: "black",
+              "&:hover": { backgroundColor: "grey" },
+            }}
+            type="submit"
+          >
+            Update
+          </Button>
+          {loadingUpdateProfile && <Spinner minimumHeight={'10vh'}/>}
+        </Box>
+        </Grid>
+        
+        <Grid item xs={12} md={8}>
+          <Box>
+            <Typography variant="h6" gutterBottom className="grey-heading"> My Orders</Typography>
+            {isLoading ? (
+              <Spinner minimumHeight={'10vh'}/>
+            ) : error ? (
+              <AlertMessage severity="error">
+                {error?.data?.message || error.error}
+              </AlertMessage>
+            ) : (<UserProfileOrdersTable orders={orders}/>)
+            }
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
