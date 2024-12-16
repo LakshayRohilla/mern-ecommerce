@@ -7,11 +7,13 @@ import CartPage from "./pages/cart-page";
 import LogInPage from "./pages/login-page";
 import SignUpPage from './pages/signUp-page.jsx'
 import ShippingPage from './pages/shipping-page.jsx'
-import PrivateRoute from './components/private-route.jsx';
+import AdminRoute from './components/adminRoute.jsx';
+import PrivateRoute from './components/privateRoute.jsx'
 import PaymentPage from './pages/paymentPage.jsx';
 import PlaceOrderPage from './pages/placeOrderPage.jsx'
 import OrderPage from './pages/orderPage.jsx';
 import ProfilePage from './pages/profilePage.jsx';
+import OrderListPage from './pages/admin/orderListPage.jsx';
 
 export default function App(){
   return (
@@ -32,6 +34,9 @@ export default function App(){
               <Route path="/placeorder" element={<PlaceOrderPage/>}/>
               <Route path="order/:oid" element={<OrderPage/>}/>
               <Route path="/profile" element={<ProfilePage/>}/>
+            </Route>
+            <Route path="" element={<AdminRoute/>}>
+              <Route path="/admin/orderList" element={<OrderListPage/>}/>
             </Route>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
