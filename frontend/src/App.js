@@ -14,6 +14,7 @@ import PlaceOrderPage from './pages/placeOrderPage.jsx'
 import OrderPage from './pages/orderPage.jsx';
 import ProfilePage from './pages/profilePage.jsx';
 import OrderListPage from './pages/admin/orderListPage.jsx';
+import ProductListPage from './pages/admin/productListPage.jsx';
 
 export default function App(){
   return (
@@ -37,6 +38,7 @@ export default function App(){
             </Route>
             <Route path="" element={<AdminRoute/>}>
               <Route path="/admin/orderList" element={<OrderListPage/>}/>
+              <Route path="/admin/productList" element={<ProductListPage/>}/>
             </Route>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
