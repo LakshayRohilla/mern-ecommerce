@@ -37,6 +37,22 @@ const getProductById = async (req, res, next) => {
     res.json({ product: product.toObject({ getters: true }) }); // => { product } => { product: product }
 }
 
+const createProduct = async (req, res, next) => {
+    const product = new Product({
+      name: 'Sample name',
+      price: 0,
+      user: req.user._id,
+      image: '/images/sample.jpg',
+      brand: 'Sample brand',
+      category: 'Sample category',
+      countInStock: 0,
+      numReviews: 0,
+      description: 'Sample description',
+    });
+    const createdProduct = await product.save();
+    res.status(201).json(createdProduct);
+  }
 
 exports.getProducts = getProducts;
 exports.getProductById = getProductById;
+exports.createProduct = createProduct;

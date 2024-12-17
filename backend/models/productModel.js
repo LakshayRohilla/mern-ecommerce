@@ -22,6 +22,8 @@ const reviewSchema = new Schema(
 const productSchema = new Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" }, // of course a product will be associated to the user itself.
+    // when I started working on the admin product create video I observed its irrelavent as admin would be the one creating it.
+    // Lets see maybe I would found its true purpose later.
     image: { type: String, required: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
