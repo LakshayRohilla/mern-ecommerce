@@ -7,6 +7,8 @@ const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser')
 const orderRoutes = require('./routes/orderRoutes');
+const path = require('path');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 dotenv.config();
 connectDB(); // connect to MongoDB;
@@ -43,6 +45,7 @@ app.use(routers);
 app.use('/api/products', productRoutes); 
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/upload', uploadRoutes);
 
 app.get('/api/config/paypal', (req, res, next) =>
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
@@ -57,5 +60,8 @@ app.use((error, req, res, next) => {
   res.json({message: error.message || 'An unknown error occurred!'});
 });
 
+// We would like to make the upload folder as an static folder
+const __dirName = path.resolve(); // Set __dirname to the current directory
+app.use('/uploads', express.static(path.join(__dirName, '/uploads')));
 
 app.listen(process.env.PORT || 5000);
