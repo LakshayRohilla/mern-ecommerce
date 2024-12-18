@@ -7,6 +7,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: PRODUCTS_URL,
       }),
+      providesTags: ['Product'], // If we dnt do this we have to refresh the page as mentioned by tutor. For more check notes.
       keepUnusedDataFor: 5,
     }),
     getProductDetails: builder.query({
@@ -22,33 +23,20 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Product'], // this is explained in the notes.
     }),
+    updateProduct: builder.mutation({
+      query: (data) => ({
+        url: `${PRODUCTS_URL}/${data.productId}`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['Product'],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation } = productsApiSlice;
+export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation } = productsApiSlice;
 
-//   endpoints: (builder) => ({
-//     getProducts: builder.query({
-//       query: ({ keyword, pageNumber }) => ({
-//         url: PRODUCTS_URL,
-//         params: { keyword, pageNumber },
-//       }),
-//       keepUnusedDataFor: 5,
-//       providesTags: ['Products'],
-//     }),
-//     getProductDetails: builder.query({
-//       query: (productId) => ({
-//         url: `${PRODUCTS_URL}/${productId}`,
-//       }),
-//       keepUnusedDataFor: 5,
-//     }),
-//     createProduct: builder.mutation({
-//       query: () => ({
-//         url: `${PRODUCTS_URL}`,
-//         method: 'POST',
-//       }),
-//       invalidatesTags: ['Product'],
-//     }),
+
 //     updateProduct: builder.mutation({
 //       query: (data) => ({
 //         url: `${PRODUCTS_URL}/${data.productId}`,
