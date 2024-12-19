@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import {
   useGetProductDetailsQuery,
   useUpdateProductMutation,
+  useUploadProductImageMutation,
 } from "../../../store/slices/productApiSlice.js";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import {
@@ -21,6 +22,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
 
 function Copyright(props) {
   return (
@@ -63,8 +65,12 @@ const ProductEditFetcher = () => {
     data: product,
     isLoading,
     refetch,
-    isError,} = useGetProductDetailsQuery(productId);
-  const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
+    isError,
+  } = useGetProductDetailsQuery(productId);
+  const [updateProduct, { isLoading: loadingUpdate }] =
+    useUpdateProductMutation();
+  const [uploadProductImage, { isLoading: loadingUpload }] =
+    useUploadProductImageMutation();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -74,13 +80,15 @@ const ProductEditFetcher = () => {
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
 
-  console.log(`Name :${name}, Price : ${price}, Brand : ${brand}`);
+  // For image upload 
+  const [file, setFile] = useState();
+  const [previewUrl, setPreviewUrl] = useState(); // for image preview
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await updateProduct({
-        productId, // we are using this in the productApiSlice we need this id. 
+        productId, // we are using this in the productApiSlice we need this id.
         name,
         price,
         image,
@@ -101,16 +109,45 @@ const ProductEditFetcher = () => {
     if (product?.product) {
       setName(product.product.name || "");
       setPrice(product.product.price || 0);
-      setImage(product.product.image || "");
+      setImage(product?.product?.image || "");
       setBrand(product.product.brand || "");
       setCategory(product.product.category || "");
       setCountInStock(product.product.countInStock || 0);
       setDescription(product.product.description || "");
     }
-  }, [product]);
+    // For Image preview 
+    if(file){
+      const fileReader = new FileReader(); // this is built-in in the browser.
+    fileReader.onload = () => {
+      setPreviewUrl(fileReader.result);
+    };
+    fileReader.readAsDataURL(file);
+    }
+  }, [product, file]);
 
+  const handleImageChange = async (e) => {
+
+      const file = e.target.files[0]; // Access the file directly from the event
+
+      if (!file) return; // Guard clause to ensure a file is selected
+      setFile(file);
+
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const res = await uploadProductImage(formData).unwrap();
+        toast.success(res.message);
+        // Extract relative path (assuming backend returns the full path)
+    const relativeImagePath = `/uploads/${res.image.split("\\").pop()}`;
+    setImage(relativeImagePath); // Update the image state with the relative path
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    };
+  
   return (
-    <Box sx={{m:4}}>
+    <Box sx={{ m: 4 }}>
       <Button
         variant="contained"
         component={Link}
@@ -124,7 +161,7 @@ const ProductEditFetcher = () => {
       >
         Go Back to List
       </Button>
-      <ThemeProvider theme={defaultTheme} >
+      <ThemeProvider theme={defaultTheme}>
         <Container component="main" maxWidth="xs">
           {/* {isError && <AlertMessage severity="error">Registration Failed !!! </AlertMessage>} */}
           <CssBaseline />
@@ -186,16 +223,71 @@ const ProductEditFetcher = () => {
                   {/* IMAGE INPUT PLACEHOLDER */}
                   <Grid item xs={12}>
                     <TextField
-                      value={brand}
+                      value={image}
                       required
                       fullWidth
-                      id="brand"
-                      label="Enter Brand"
-                      name="brand"
-                      autoComplete="brand"
-                      onChange={(e) => setBrand(e.target.value)}
+                      label="Enter Image URL"
+                      autoComplete="image"
+                      onChange={(e) => setImage(e.target.value)}
                     />
                   </Grid>
+
+                  {/* File Upload Section */}
+                  <Grid item xs={12}>
+                    <input
+                      accept="image/*"
+                      type="file"
+                      id="image" // Unique ID for the file input
+                      name="image"
+                      style={{ display: "none" }}
+                      onChange={handleImageChange}
+                    />
+                    <label htmlFor="image">
+                      <Button
+                        variant="contained"
+                        component="span"
+                        endIcon={<FileUploadIcon />}
+                        sx={{
+                          color: "white",
+                          backgroundColor: "black",
+                          "&:hover": { backgroundColor: "grey" },
+                          width: "100%",
+                        }}
+                      >
+                        Upload Image
+                      </Button>
+                    </label>
+                  </Grid>
+
+                  {loadingUpload && (
+                    <Grid item xs={12}>
+                      <Spinner minimumHeight={"10vh"} />
+                    </Grid>
+                  )}
+
+                  {/* Image Preview */}
+                  {image && !previewUrl && (
+                    <Grid item xs={12}>
+                      <Box mt={2}>
+                        <img
+                          src={image}
+                          alt="Image cant load"
+                          style={{ maxWidth: "100%", maxHeight: "200px" }}
+                        />
+                      </Box>
+                    </Grid>
+                  )}
+                  {previewUrl && (
+                    <Grid item xs={12}>
+                      <Box mt={2}>
+                        <img
+                          src={previewUrl}
+                          alt="Preview"
+                          style={{ maxWidth: "100%", maxHeight: "200px" }}
+                        />
+                      </Box>
+                    </Grid>
+                  )}
                   <Grid item xs={12}>
                     <TextField
                       value={category}
@@ -253,8 +345,8 @@ const ProductEditFetcher = () => {
 
           <Copyright sx={{ mt: 5 }} />
         </Container>
-      </ThemeProvider>      
-      </Box>
+      </ThemeProvider>
+    </Box>
   );
 };
 
