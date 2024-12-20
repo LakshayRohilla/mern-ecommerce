@@ -35,7 +35,7 @@ const ProductListAdminFetcher = () => {
             </Button>
         </Box>
         { loadingCreate && <Spinner minimumHeight={"10vh"} /> }
-        <ProductListTable products={products} isLoading={isLoading} isError={isError}/>
+        <ProductListTable products={products} isLoading={isLoading} isError={isError} refetch={refetch}/>
     </Box>
   );
 };

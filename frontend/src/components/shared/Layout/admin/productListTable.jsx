@@ -16,10 +16,14 @@ import AlertMessage from '../../UI/alertMessage';
 import { Link } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useDeleteProductMutation } from '../../../../store/slices/productApiSlice.js';
+import { toast } from 'react-toastify';
 
-const ProductListTable = ({products, isLoading, isError}) => {
+const ProductListTable = ({products, isLoading, isError, refetch}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -30,8 +34,16 @@ const ProductListTable = ({products, isLoading, isError}) => {
     setPage(0);
   };
 
-  const deleteHandler = (id) => {
-    console.log(`Delete product with ID: ${id}`);
+  const deleteHandler = async (id) => {
+    if (window.confirm('Are you sure')) {
+      try {
+        await deleteProduct(id);
+        toast.success('Product Deleted Successfully')
+        refetch();
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
   };
 
   return (
@@ -80,6 +92,7 @@ const ProductListTable = ({products, isLoading, isError}) => {
                             <EditIcon />
                           </Button>
                         </Box>
+                        {loadingDelete && <Spinner minimumHeight={"10vh"} />}
                         <Button
                           variant="contained"
                           color="error"
