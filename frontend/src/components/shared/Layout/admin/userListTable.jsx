@@ -19,10 +19,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDeleteUserMutation } from '../../../../store/slices/userApiSlice';
 
 const UserListTable = ({ users, isLoading, isError, refetch }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [deleteUser, { isLoading: loadingDelete }] = useDeleteUserMutation();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -34,15 +36,14 @@ const UserListTable = ({ users, isLoading, isError, refetch }) => {
   };
 
   const deleteHandler = async (id) => {
-    // if (window.confirm('Are you sure you want to delete this user?')) {
-    //   try {
-    //     console.log('Delete user:', id);
-    //     toast.success('User deleted successfully');
-    //     refetch();
-    //   } catch (err) {
-    //     toast.error(err?.data?.message || err.error);
-    //   }
-    // }
+    if (window.confirm('Are you sure')) {
+        try {
+          await deleteUser(id);
+          refetch();
+        } catch (err) {
+          toast.error(err?.data?.message || err.error);
+        }
+      }
   };
 
   return (
@@ -98,6 +99,7 @@ const UserListTable = ({ users, isLoading, isError, refetch }) => {
                             <EditIcon />
                           </Button>
                         </Box>
+                        {loadingDelete && <Spinner minimumHeight={"10vh"} />}
                         <Button
                           variant="contained"
                           color="error"
