@@ -16,6 +16,7 @@ import ProfilePage from './pages/profilePage.jsx';
 import OrderListPage from './pages/admin/orderListPage.jsx';
 import ProductListPage from './pages/admin/productListPage.jsx';
 import ProductEditPage from './pages/admin/productEditPage.jsx';
+import UserListPage from './pages/admin/userListPage.jsx'
 
 export default function App(){
   return (
@@ -41,6 +42,7 @@ export default function App(){
               <Route path="/admin/orderList" element={<OrderListPage/>}/>
               <Route path="/admin/productList" element={<ProductListPage/>}/>
               <Route path="/admin/product/:id/edit" element={<ProductEditPage/>}/>
+              <Route path="/admin/userList" element={<UserListPage/>}/>
             </Route>
             {/* <Route path='/appointment' element={<Appointment/>}/>
             <Route path='/products' element={<Products/>}/>
