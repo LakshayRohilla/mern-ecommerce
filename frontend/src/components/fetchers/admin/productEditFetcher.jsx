@@ -271,7 +271,7 @@ const ProductEditFetcher = () => {
                       <Box mt={2}>
                         <img
                           src={image}
-                          alt="Image cant load"
+                          alt="cant load"
                           style={{ maxWidth: "100%", maxHeight: "200px" }}
                         />
                       </Box>

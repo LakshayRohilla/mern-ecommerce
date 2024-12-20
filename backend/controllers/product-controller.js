@@ -82,7 +82,20 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+const deleteProduct = async (req, res, next) => {
+  const product = await Product.findById(req.params.pid);
+  if (product) {
+    await Product.deleteOne({ _id: product._id });
+    res.json({ message: 'Product removed' });
+  } else {
+    const error = new Error("Product not found."); // Error handling
+    error.code = 404;
+    return next(error); // so that it will reach to the next middleware handling the error handling.
+  }
+};
+
 exports.getProducts = getProducts;
 exports.getProductById = getProductById;
 exports.createProduct = createProduct;
 exports.updateProduct = updateProduct;
+exports.deleteProduct = deleteProduct;
