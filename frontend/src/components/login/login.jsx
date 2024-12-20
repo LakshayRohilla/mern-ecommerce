@@ -151,7 +151,7 @@ export default function LogIn() {
                   </Box>
                 </Grid>
                 <Grid item>
-                  <Box component={Link} to={redirect ? `/register?redirect=&{redirect}` : `/signUp`} sx={{ color: 'inherit', textDecoration: 'none', cursor:'pointer', '&:hover': { color: 'grey' }}} variant="body2" >
+                  <Box component={Link} to={redirect ? `/signUp?redirect=&{redirect}` : `/signUp`} sx={{ color: 'inherit', textDecoration: 'none', cursor:'pointer', '&:hover': { color: 'grey' }}} variant="body2" >
                     {"Don't have an account? Sign Up"}
                   </Box>
                 </Grid>
