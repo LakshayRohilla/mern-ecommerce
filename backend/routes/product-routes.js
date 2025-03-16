@@ -9,6 +9,6 @@ router.route('/').get(productController.getProducts).post(protect, admin, produc
 
 // router.get("/:pid", productController.getProductById);
 router.route('/:pid').get(productController.getProductById).put(protect, admin, productController.updateProduct).delete(protect, admin, productController.deleteProduct);
-
+router.route('/:id/reviews').post(protect, productController.createProductReview);
 
 module.exports = router;

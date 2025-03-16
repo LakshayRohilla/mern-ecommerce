@@ -35,7 +35,7 @@ const ProductsDetailsFetcher = () => {
   //     fetchproducts();
   // }, [productId]);
 
-  const {data: productsDetail, isLoading, isError} = useGetProductDetailsQuery(productId);
+  const {data: productsDetail, isLoading, isError, refetch} = useGetProductDetailsQuery(productId);
   const product = productsDetail?.product;
   console.log(product);
 
@@ -50,7 +50,7 @@ const ProductsDetailsFetcher = () => {
       ) : isError ? (
         <AlertMessage severity='error' marBot={45}>{isError?.data?.message || isError.error || 'Data not found !!'}</AlertMessage>
       ) : (
-        <ProductDetailsLayout product={product} />
+        <ProductDetailsLayout product={product} refetch={refetch}/>
       )}
     </>
   );

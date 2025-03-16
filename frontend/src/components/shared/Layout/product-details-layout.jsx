@@ -3,10 +3,11 @@ import { Grid, Typography, Box } from '@mui/material';
 import ProdRating from '../UI/prod-rating';
 import ProductDetailsCartSection from './product-details-cart-section';
 import { addToCart } from '../../../store/slices/cartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch,  useSelector  } from 'react-redux';
 import { SnackbarProvider } from "notistack";
+import ProductReview from '../../productReview';
 
-const ProductDetailsLayout = ({ product }) => {
+const ProductDetailsLayout = ({ product, refetch}) => {
   const dispatch = useDispatch(); 
     // const navigate = useNavigate();
 
@@ -51,6 +52,7 @@ const ProductDetailsLayout = ({ product }) => {
         <ProductDetailsCartSection price={product.price} countInStock={product.countInStock} onCartAddHandler={onCartAddHandler}/>
       </Grid>
     </Grid>
+    <ProductReview refetch={refetch} product={product}/>
     </SnackbarProvider>
   );
 };
