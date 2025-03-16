@@ -1,6 +1,8 @@
 const { products } = require("../data/products.js"); // This is how we import the exported array in the product file.
 
 const Product = require("../models/productModel.js");
+const errorModel = require("../models/error-model");
+
 const getProducts = async (req, res, next) => {
   // res.json({products}); // {products : products}
   let products;
@@ -94,8 +96,46 @@ const deleteProduct = async (req, res, next) => {
   }
 };
 
+const createProductReview = async (req, res) => {
+  const { rating, comment } = req.body;
+
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    const alreadyReviewed = product.reviews.find(
+      (r) => r.user.toString() === req.user._id.toString()
+    );
+
+    if (alreadyReviewed) {
+      res.status(400);
+      throw new Error('Product already reviewed');
+    }
+
+    const review = {
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+      user: req.user._id,
+    };
+
+    product.reviews.push(review);
+
+    product.numReviews = product.reviews.length;
+
+    product.rating =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+
+    await product.save();
+    res.status(201).json({ message: 'Review added' });
+  } else {
+    return next(errorModel(404, "Product not found"));
+  }
+};
+
 exports.getProducts = getProducts;
 exports.getProductById = getProductById;
 exports.createProduct = createProduct;
 exports.updateProduct = updateProduct;
 exports.deleteProduct = deleteProduct;
+exports.createProductReview = createProductReview;
